@@ -1,0 +1,100 @@
+package com.mauro.tracemenow;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
+import com.amazonaws.regions.Regions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
+public class AWSMqtt {
+    private JSONObject message;
+
+    private Activity activity;
+    private Context context;
+
+    private String clientId;
+    private String customerEndpoint;
+    private String cognitoPoolId;
+    private static final Regions MY_REGION = Regions.US_EAST_1;
+
+    protected AWSIotMqttManager mqttManager;
+    private CognitoCachingCredentialsProvider credentialsProvider;
+
+    private static final String LOG_TAG = "[IOT CORE]";
+
+    public AWSMqtt(Activity activity, Context context, String customerEndpoint, String cognitoPoolId) {
+        this.activity = activity;
+        this.context = context;
+
+        this.customerEndpoint = customerEndpoint;
+        this.cognitoPoolId = cognitoPoolId;
+
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        clientId = sharedPref.getString("uuid", null);
+
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                context,
+                this.cognitoPoolId,
+                MY_REGION
+        );
+
+        mqttManager = new AWSIotMqttManager(clientId, this.customerEndpoint);
+    }
+
+    public void connect() {
+        mqttManager.connect(credentialsProvider, new AWSIotMqttClientStatusCallback() {
+            @Override
+            public void onStatusChanged(final AWSIotMqttClientStatus status, final Throwable throwable) {
+                Log.d(LOG_TAG, "Status = " + String.valueOf(status));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (status == AWSIotMqttClientStatus.Connecting) {
+                            Log.i(LOG_TAG, "Connecting...");
+                        } else if (status == AWSIotMqttClientStatus.Connected) {
+                            Log.i(LOG_TAG, "Connected");
+                        } else if (status == AWSIotMqttClientStatus.Reconnecting) {
+                            if (throwable != null) {
+                                Log.e(LOG_TAG, "Connection error.", throwable);
+                            }
+                            Log.i(LOG_TAG, "Reconnecting");
+                        } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
+                            if (throwable != null) {
+                                Log.e(LOG_TAG, "Connection error.", throwable);
+                                throwable.printStackTrace();
+                            }
+                            Log.i(LOG_TAG, "Disconnected");
+                        } else {
+                            Log.i(LOG_TAG, "Disconnected");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void newDeviceNotification(AWSIotMqttNewMessageCallback callback) {
+        mqttManager.subscribeToTopic("device/new", AWSIotMqttQos.QOS0, callback);
+    }
+}

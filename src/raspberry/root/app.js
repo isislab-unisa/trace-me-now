@@ -9,10 +9,11 @@ const backend_mqtt = require('./mqtt_requests/backend_mqtt');
 const uuid4 = require('uuid4');
 const Mqtt = require('./mqtt_requests/backend_mqtt');
 
+var roomNumber;
+var raspberryId;
+
 class BleScanner {
 
-	roomNumber;
-	raspberryId;
 	#scanner;
 
 	constructor() {

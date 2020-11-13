@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const fs = require('fs');
 const Noble = require('noble');
 const BeaconScanner = require('node-beacon-scanner');
@@ -5,6 +7,7 @@ const devices = require('./devices.json');
 const backend_https = require('./http_requests/backend_https');
 const backend_mqtt = require('./mqtt_requests/backend_mqtt');
 const uuid4 = require('uuid4');
+const Mqtt = require('./mqtt_requests/backend_mqtt');
 
 class BleScanner {
 
@@ -16,7 +19,7 @@ class BleScanner {
 		console.log('Starting...');
 		console.log('Checking room number... \n');
 
-		raspberryId = process.env.UUID;
+		roomNumber = process.env.ROOM_NUMBER;
 
 		if(roomNumber === undefined || roomNumber === '') {
 			console.log('Please, set the ROOM_NUMBER value within the .env file in the root of the project');
@@ -27,7 +30,7 @@ class BleScanner {
 		console.log(`Room number... OK! Raspberry placed in room number ${roomNumber}`);
 		console.log('Checking Raspberry ID... \n');
 
-		roomNumber = process.env.ROOM_NUMBER;
+		raspberryId = process.env.UUID;
 
 		if(raspberryId === undefined) {
 			console.log('Raspberry ID not set up yet. Generating a new one... ');
@@ -39,7 +42,9 @@ class BleScanner {
 
 		console.log(`Raspberry ID... OK! Raspberry ID: ${raspberryId} \n`);
 
-		this.#scanner = new BeaconSscanner();
+		backend_mqtt = new Mqtt();
+
+		this.#scanner = new BeaconScanner();
 	}
 
 	startScanning() {

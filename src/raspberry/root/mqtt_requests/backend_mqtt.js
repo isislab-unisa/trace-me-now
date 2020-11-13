@@ -1,10 +1,12 @@
 require('dotenv').config()
 
 if(process.env.ON_PREMISE) {
+    console.log("Connecting to Mosquitto... ");
     var mqtt = require('mqtt');
 
     var client = mqtt.connect(process.env.MQTT_ADDRESS + ":" + process.env.MQTT_PORT, { clientId: process.env.CLIENT_ID })
 } else {
+    console.log("Connecting to AWS IoT... ");
     var awsIot = require('aws-iot-device-sdk');
 
     var client = awsIot.device({
@@ -19,12 +21,12 @@ if(process.env.ON_PREMISE) {
 }
 
 client.on('connect', function () {
-    console.log('Connected to AWS IoT');
+    console.log('Connected to MQTT broker');
     console.log(' - Press Ctrl+C to stop scanning');
 });
 
 client.on('offline', function () {
-    console.log('Not connected to AWS IoT');
+    console.log('Not connected to MQTT broker');
 });
 
 client.on('error', function (err) {
@@ -32,11 +34,11 @@ client.on('error', function (err) {
 });
 
 client.on('close', function() {
-   console.log('AWS IoT connection closed');
+   console.log('MQTT broker connection closed');
 });
 
 client.on('reconnect', function() {
-   console.log('Reconnecting to AWS IoT');
+   console.log('Reconnecting to MQTT broker');
 });
 
 const newDevice = function (d) {

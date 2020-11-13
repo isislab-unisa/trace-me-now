@@ -42,6 +42,8 @@ public class AWSMqtt {
 
     private static final String LOG_TAG = "[IOT CORE]";
 
+    private boolean flag = false;
+
     public AWSMqtt(Activity activity, Context context, String customerEndpoint, String cognitoPoolId) {
         this.activity = activity;
         this.context = context;
@@ -94,7 +96,67 @@ public class AWSMqtt {
         });
     }
 
-    public void newDeviceNotification(AWSIotMqttNewMessageCallback callback) {
-        mqttManager.subscribeToTopic("device/new", AWSIotMqttQos.QOS0, callback);
+    public String getClientId() {
+        return clientId.toUpperCase();
+    }
+
+    public void getNewDeviceNotification(AWSIotMqttNewMessageCallback callback) {
+        await();
+        mqttManager.subscribeToTopic("notify/new", AWSIotMqttQos.QOS0, callback);
+    }
+
+    public void getDeleteDeviceNotification(AWSIotMqttNewMessageCallback callback) {
+        await();
+        mqttManager.subscribeToTopic("notify/delete", AWSIotMqttQos.QOS0, callback);
+    }
+
+    public void getLocationNotification(AWSIotMqttNewMessageCallback callback) {
+        await();
+        String payload = "{\"uuid\": \""+clientId.toUpperCase()+"\"}";
+        mqttManager.publishString(payload, "device/loaction", AWSIotMqttQos.QOS0);
+        if(!flag)
+            mqttManager.subscribeToTopic("notify/location/"+clientId.toUpperCase(), AWSIotMqttQos.QOS0, callback);
+    }
+
+    public void getPositionNotification(AWSIotMqttNewMessageCallback callback) {
+        await();
+        mqttManager.subscribeToTopic("notify/position/"+clientId.toUpperCase(), AWSIotMqttQos.QOS0, callback);
+    }
+
+    public void getCustomNotification(String topic, AWSIotMqttNewMessageCallback callback) {
+        await();
+        mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0, callback);
+    }
+
+    public void publishTo(String topic, String payload) {
+        mqttManager.publishString(payload, topic, AWSIotMqttQos.QOS0);
+    }
+
+    public void removeNewDeviceNotification() {
+        mqttManager.unsubscribeTopic("notify/new");
+    }
+
+    public void removeDeleteDevicesNotification() {
+        mqttManager.unsubscribeTopic("notify/delete");
+    }
+
+    public void removeGetLocation() {
+        mqttManager.unsubscribeTopic("notify/location/"+clientId.toUpperCase());
+    }
+
+    public void removeGetPosition() {
+        mqttManager.unsubscribeTopic("notify/position/"+clientId.toUpperCase());
+    }
+
+    public void removeCustomNotification(String topic) {
+        mqttManager.unsubscribeTopic(topic);
+    }
+
+    private void await() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

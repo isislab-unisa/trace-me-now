@@ -25,7 +25,7 @@ def on_message(client, userdata, msg):
     if _topic == "device/delete":
         return functions.delete_devices(json.loads(_message))
 
-    if _topic == "device/position":
+    if _topic == "device/location":
         return functions.get_device_position(json.loads(_message))
 
     for event in events:
@@ -52,7 +52,7 @@ def connect():
     mqtt_client.subscribe("device/new")
     mqtt_client.subscribe("device/update")
     mqtt_client.subscribe("device/delete")
-    mqtt_client.subscribe("device/position")
+    mqtt_client.subscribe("device/location")
     mqtt_client.loop_start()
 
 def new_event(topic_event, topic_response, function):

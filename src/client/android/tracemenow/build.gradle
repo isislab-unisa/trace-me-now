@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     testImplementation 'junit:junit:4.+'
@@ -54,6 +53,9 @@ dependencies {
     // AWS
     implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true }
     implementation ('com.amazonaws:aws-android-sdk-lex:2.6.+@aar') { transitive = true }
-
     implementation 'com.amazonaws:aws-android-sdk-iot:2.18.0' // 2.6.29
+
+    // Paho MQTT
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }

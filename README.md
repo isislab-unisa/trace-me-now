@@ -22,7 +22,7 @@ Trace Me Now is an open-source framework which helps developers in building thei
 
 In order to use this library, create a new Android Studio project and add the following in your root `build.gradle` at the end of repositories
 
-```json
+```gradle
 	allprojects {
 		repositories {
 			...
@@ -33,7 +33,7 @@ In order to use this library, create a new Android Studio project and add the fo
 
 and add the dependency
 
-```json
+```gradle
 	dependencies {
 	        implementation 'com.github.spike322:tracemenow-android-library:Tag'
 	}

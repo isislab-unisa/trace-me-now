@@ -115,12 +115,12 @@ public class AWSMqtt {
         String payload = "{\"uuid\": \""+clientId.toUpperCase()+"\"}";
         mqttManager.publishString(payload, "device/loaction", AWSIotMqttQos.QOS0);
         if(!flag)
-            mqttManager.subscribeToTopic("notify/location/"+clientId.toUpperCase(), AWSIotMqttQos.QOS0, callback);
+            mqttManager.subscribeToTopic("notify/location/"+getClientId(), AWSIotMqttQos.QOS0, callback);
     }
 
     public void getPositionNotification(AWSIotMqttNewMessageCallback callback) {
         await();
-        mqttManager.subscribeToTopic("notify/position/"+clientId.toUpperCase(), AWSIotMqttQos.QOS0, callback);
+        mqttManager.subscribeToTopic("notify/position/"+getClientId(), AWSIotMqttQos.QOS0, callback);
     }
 
     public void getCustomNotification(String topic, AWSIotMqttNewMessageCallback callback) {
@@ -141,11 +141,11 @@ public class AWSMqtt {
     }
 
     public void removeGetLocation() {
-        mqttManager.unsubscribeTopic("notify/location/"+clientId.toUpperCase());
+        mqttManager.unsubscribeTopic("notify/location/"+getClientId());
     }
 
     public void removeGetPosition() {
-        mqttManager.unsubscribeTopic("notify/position/"+clientId.toUpperCase());
+        mqttManager.unsubscribeTopic("notify/position/"+getClientId());
     }
 
     public void removeCustomNotification(String topic) {

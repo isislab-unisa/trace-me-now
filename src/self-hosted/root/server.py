@@ -9,7 +9,7 @@ def start_server():
     mqtt.connect()
 
 def start_thread():
-    app.run()
+    app.run(host = '0.0.0.0')
 
 def new_event(topic_event, topic_response, function):
     mqtt.new_event(topic_event, topic_response, function)

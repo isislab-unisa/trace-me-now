@@ -61,8 +61,6 @@ class BleScanner {
 			
 			distance = distance.toFixed(2);
 
-			console.log(beacon);
-
 			this.#checkDevice(beacon.uuid, distance);
 		}
 

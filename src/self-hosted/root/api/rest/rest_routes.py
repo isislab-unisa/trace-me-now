@@ -13,13 +13,19 @@ from .. import functions
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = settings.MONGO_URI # 'mongodb://127.0.0.1:27017/globalStatus'
+app.config['MONGO_URI'] = settings.MONGO_URI
 mongo = PyMongo(app)
 
 @app.route('/getDevices')
 def get_devices():
     devices = mongo.db.devices.find()
     res = {"devices": json.loads(dumps(list(devices), indent = 1))}
+    return res
+
+@app.route('/getDevice/<uuid>')
+def get_device(uuid):
+    _json = {"uuid": uuid}
+    res = functions.get_device(_json)
     return res
 
 @app.route('/getDevicePosition', methods=['POST'])
@@ -47,8 +53,8 @@ def new_device():
 @app.route('/deleteDevices', methods=['POST'])
 def delete_devices():
     _json = request.json
-    if functions.delete_devices(_json):
-        res = jsonify("Devices deleted succesfully!")
+    if functions.delete_device(_json):
+        res = jsonify("Device deleted succesfully!")
 
         res.status_code = 200
 

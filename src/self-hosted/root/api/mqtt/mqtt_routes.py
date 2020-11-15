@@ -23,7 +23,7 @@ def on_message(client, userdata, msg):
         return functions.update_devices(json.loads(_message))
 
     if _topic == "device/delete":
-        return functions.delete_devices(json.loads(_message))
+        return functions.delete_device(json.loads(_message))
 
     if _topic == "device/location":
         return functions.get_device_position(json.loads(_message))

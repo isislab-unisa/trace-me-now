@@ -44,7 +44,19 @@ def update_devices(_json):
         _raspberryId = device['raspberryId']
 
         res = {"roomNumber": _roomNumber, "lastPosition": _lastPosition}
-        mqtt_client.publish("notify/position/"+_uuid, dumps(res))
+        print("notify/position/"+_uuid.upper())
+        mqtt_client.publish("notify/position/"+_uuid.upper(), dumps(res))
+
+        d = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
+        
+        if d["roomNumber"] != _roomNumber and d["raspberryId"] != _raspberryId:
+            change = {
+                "fromRoom": d["roomNumber"],
+                "toRoom": _roomNumber,
+                "fromRaspberry": d["raspberryId"],
+                "toRaspberry": _raspberryId
+            }
+            mqtt_client.publish("notify/change/"+_uuid.upper(), dumps(change))
 
         query = {"uuid": _uuid}
         newvalues = { "$set": {
@@ -64,22 +76,21 @@ def update_devices(_json):
     
     return True
 
-def delete_devices(_json):
-    _devices = _json['devices']
+def delete_device(_json):
+    _device = _json['device']
 
-    for device in _devices:
-        _uuid = device['uuid']
+    _uuid = _device['uuid']
 
-        query = {"uuid": _uuid}
+    query = {"uuid": _uuid}
 
-        if _uuid:
-            mongo.db.devices.delete_one(query)
-            mqtt_client.publish("notify/delete", dumps({"device": device}))
-            print("Device deleted successfully")
-        else:
-            return False
-    
-    return True
+    if _uuid:
+        mongo.db.devices.delete_many(query)
+        mqtt_client.publish("notify/delete", dumps({"device": _device}))
+        print("Device deleted successfully")
+
+        return True
+    else:
+        return False
 
 def get_device_position(_json):
     _uuid = _json['uuid']
@@ -87,5 +98,15 @@ def get_device_position(_json):
     device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
 
     res = {"roomNumber": device["roomNumber"], "lastPosition": device["lastPosition"]}
-    mqtt_client.publish("notify/location/"+_uuid, dumps(res))
+    mqtt_client.publish("notify/location/"+_uuid.upper(), dumps(res))
     return res
+
+def get_device(_json):
+    _uuid = _json['uuid']
+
+    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
+
+    res = {"uuid": device["uuid"], "lastSeen": device["lastSeen"], "lastPosition": device["lastPosition"], "roomNumber": device["roomNumber"], "raspberryId": device["raspberryId"]}
+    
+    return res
+

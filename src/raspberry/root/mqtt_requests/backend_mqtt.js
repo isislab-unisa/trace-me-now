@@ -1,18 +1,19 @@
 require('dotenv').config()
 
+const mqtt = require('mqtt');
+const awsIot = require('aws-iot-device-sdk');
+
 var client;
 
 class Mqtt {
 
     constructor() {
-        if (process.env.ON_PREMISE) {
+        if (process.env.ON_PREMISE === "true") {
             console.log("Connecting to Mosquitto... ");
-            var mqtt = require('mqtt');
 
-            client = mqtt.connect(process.env.MQTT_ADDRESS + ":" + process.env.MQTT_PORT, { clientId: process.env.UUID })
+            client = mqtt.connect("mqtt://" + process.env.MQTT_ADDRESS + ":" + process.env.MQTT_PORT, { clientId: process.env.UUID })
         } else {
             console.log("Connecting to AWS IoT... ");
-            var awsIot = require('aws-iot-device-sdk');
 
             client = awsIot.device({
                 keyPath: process.env.KEY_PATH,

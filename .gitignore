@@ -131,3 +131,7 @@ dmypy.json
 # NodeJS
 node_modules/
 .env
+e35a5767bc-certificate.pem.crt
+e35a5767bc-private.pem.key
+e35a5767bc-public.pem.key
+certs

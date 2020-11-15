@@ -76,11 +76,13 @@ bleSetup.stopTransmitting();
 ```
 ### OnPremiseMqtt
 
-The `OnPremiseMqtt` allows you to receive notifications from the system and to define a behaviour for each notification, as well as remove reception of notifications.
+The `OnPremiseMqtt` allows you to receive notifications from the system, when using an on-premise back-end, and to define a behaviour for each notification, as well as remove reception of notifications.
+
+**NOTE: if you use OnPremiseMqtt, you won't use AWSMqtt and vice versa.**
 
 *If you want to know more about the notification system, take a look to [Notification System](#notification-system).*
 
-Here, first thing you have to do is to define a callback which mainly defines the behaviour when a message arrives
+Here, first thing you have to do is to define a callback, which mainly defines the behaviour when a message arrives
 
 ```java
 MqttCallbackExtended callback = new MqttCallbackExtended() {
@@ -125,6 +127,364 @@ MqttCallbackExtended callback = new MqttCallbackExtended() {
 ```
 
 In the `messageArrived()` method you can check from wich topic the message arrives and define a specific behaviour.
+
+Now you can instantiate your mqtt client
+
+```java
+OnPremiseMqtt mqttClient = new OnPremiseMqtt(activity, context, ipAddress, mosquittoPort, callback);
+```
+
+specifying the activity, context, ip address, port, and the callback defined previously. For example, if you are using it in your main activity, you could just use `this` instead of activity and context.
+
+Once this is done, you're able to connect to the broker
+
+```java
+mqttClient.connect();
+```
+
+Now that you are connected, you might want to subscribe to some (or even all) of the [default events](#notification-system) in order to receive notifications, or you might want to get some custom notification.
+
+```java
+mqttClient.getNewDeviceNotification();
+```
+
+By calling this method, you will subscribe to the *'notify/new'* topic and you will receive a message every time a new device comes in.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+```java
+mqttClient.getDeleteDeviceNotification();
+```
+
+By calling this method, you will subscribe to the *'notify/delete'* topic and you will receive a message every time a device leaves the system.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+```java
+mqttClient.getLocationNotification();
+```
+
+Each time you will call this method, you will receive your current location once.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+```java
+mqttClient.getPositionNotification();
+```
+
+By calling this method, you will receive your updated current location continuously until you unsubscribe from it.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+```java
+mqttClient.getChangeNotification();
+```
+
+By calling this method, you will receive a notification everytime your device changes *room/raspberry*.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+```java
+mqttClient.getCustomNotification("custom/topic");
+```
+
+By calling this method, you will subscribe to your custom topic, specified as a parameter, and you will receive a message every time something is published on it.
+You can specify the behaviour when this message comes in in the `messageArrived()` method specified before, which will run in a separate thread.
+
+At some point, you might don't want to receive some notification anymore, so you can unsubscribe to topics.
+
+```java
+mqttClient.removeNewDeviceNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/new'* topic and you won't receive such a notification anymore.
+
+```java
+mqttClient.removeDeleteDevicesNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/delete'* topic and you won't receive such a notification anymore.
+
+```java
+mqttClient.removeLocationNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/location/uuid'* topic and you won't receive such a notification anymore.
+
+```java
+mqttClient.removePositionNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/position/uuid'* topic and you won't receive such a notification anymore.
+
+```java
+mqttClient.removeChangeNotification();
+```
+
+By calling this method, you will unsubscribe from the 'notify/change/uuid' topic and you won't receive such a notification anymore.
+
+```java
+mqttClient.removeCustomNotification("custom/topic");
+```
+
+By calling this method, you will unsubscribe from the topic specified as a parameter.
+
+### AwsMqtt
+
+The `AwsMqtt` allows you to receive notifications from the system, when using a serverless back-end running on AWS, and to define a behaviour for each notification, as well as remove reception of notifications.
+
+**NOTE: if you use AWSMqtt, you won't use OnPremiseMqtt and vice versa.**
+
+*If you want to know more about the notification system, take a look to [Notification System](#notification-system).*
+
+First thing you have to do is to instantiate an object of the `AwsMqtt` class
+
+```java
+AWSMqtt awsClient = new AWSMqtt(activity, context, "*****.amazonaws.com", "us-east-1:*****");
+```
+
+specifying the activity, context, your customer endpoint, and the cognito pool id. For example, if you are using it in your main activity, you could just use `this` instead of activity and context.
+
+Once this is done, you're able to connect to the IoT Core platform
+
+```java
+awsClient.connect();
+```
+
+Now that you are connected, you might want to subscribe to some (or even all) of the [default events](#notification-system) in order to receive notifications, or you might want to get some custom notification.
+
+```java
+awsClient.getNewDeviceNotification(new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject device = jsonObject.getJSONObject("device");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+```
+By calling this method, you will subscribe to the *'notify/new'* topic and you will receive a message every time a new device comes in.
+Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+```java
+awsClient.getDeleteDeviceNotification(new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject device = jsonObject.getJSONObject("device");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+```
+
+By calling this method, you will subscribe to the *'notify/delete'* topic and you will receive a message every time a device leaves the system.
+Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+```java
+awsClient.getLocationNotification(new AWSIotMqttNewMessageCallback() {
+              @Override
+              public void onMessageArrived(String topic, byte[] data) {
+                  runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+                          try {
+                              String message = new String(data, "UTF-8");
+                              Log.d(LOG_TAG, "Message arrived:");
+                              Log.d(LOG_TAG, "   Topic: " + topic);
+                              Log.d(LOG_TAG, " Message: " + message);
+
+                              JSONObject jsonObject = null;
+                              try {
+                                  jsonObject = new JSONObject(message);
+                              } catch (JSONException e) {
+                                  e.printStackTrace();
+                              }
+
+                              JSONObject device = jsonObject.getJSONObject("device");
+                          } catch (UnsupportedEncodingException | JSONException e) {
+                              Log.e(LOG_TAG, "Message encoding error.", e);
+                          }
+                      }
+                  });
+              }
+        });
+```
+
+Each time you will call this method, you will receive your current location once.
+Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+```java
+awsClient.getPositionNotification(new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject device = jsonObject.getJSONObject("device");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+```
+By calling this method, you will receive your updated current location continuously until you unsubscribe from it. Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+```java
+awsClient.getChangeNotification(new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject device = jsonObject.getJSONObject("device");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+```
+
+By calling this method, you will receive a notification everytime your device changes *room/raspberry*. Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+```java
+awsClient.getCustomNotification("custom/topic", new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject value = jsonObject.getJSONObject("value");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+```
+
+By calling this method, you will subscribe to your custom topic, specified as a parameter, and you will receive a message every time something is published on it. Everytime you subscribe to a new topic, you have to define a new behaviour in a callback.
+You can specify the behaviour when this message arrives in the `run()` method specified before, which will run in a separate thread.
+
+At some point, you might don't want to receive some notification anymore, so you can unsubscribe to topics.
+
+```java
+awsClient.removeNewDeviceNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/new'* topic and you won't receive such a notification anymore.
+
+```java
+awsClient.removeDeleteDevicesNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/delete'* topic and you won't receive such a notification anymore.
+
+```java
+awsClient.removeLocationNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/location/uuid'* topic and you won't receive such a notification anymore.
+
+```java
+awsClient.removePositionNotification();
+```
+
+By calling this method, you will unsubscribe from the *'notify/position/uuid'* topic and you won't receive such a notification anymore.
+
+```java
+awsClient.removeChangeNotification();
+```
+
+By calling this method, you will unsubscribe from the 'notify/change/uuid' topic and you won't receive such a notification anymore.
+
+```java
+awsClient.removeCustomNotification("custom/topic");
+```
+
+By calling this method, you will unsubscribe from the topic specified as a parameter.
+
 
 ## Raspberry Pi Library
 

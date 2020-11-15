@@ -96,6 +96,10 @@ public class OnPremiseMqtt {
         new Subscribe().execute("notify/position/"+getClientId());
     }
 
+    public void getChangeNotification(){
+        new Subscribe().execute("notify/change/"+getClientId());
+    }
+
     public void getCustomNotification(String topic) {
         new Subscribe().execute(topic);
     }
@@ -129,7 +133,7 @@ public class OnPremiseMqtt {
         }
     }
 
-    public void removeGetLocation() {
+    public void removeLocationNotification() {
         try {
             mqttAndroidClient.unsubscribe("notify/location/"+getClientId());
         } catch (MqttException ex) {
@@ -138,9 +142,18 @@ public class OnPremiseMqtt {
         }
     }
 
-    public void removeGetPosition() {
+    public void removePositionNotification() {
         try {
             mqttAndroidClient.unsubscribe("notify/position/"+getClientId());
+        } catch (MqttException ex) {
+            System.err.println("Exception whilst unsubscribing");
+            ex.printStackTrace();
+        }
+    }
+
+    public void removeChangeNotification() {
+        try {
+            mqttAndroidClient.unsubscribe("notify/change/"+getClientId());
         } catch (MqttException ex) {
             System.err.println("Exception whilst unsubscribing");
             ex.printStackTrace();

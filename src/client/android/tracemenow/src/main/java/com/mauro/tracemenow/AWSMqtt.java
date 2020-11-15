@@ -123,6 +123,11 @@ public class AWSMqtt {
         mqttManager.subscribeToTopic("notify/position/"+getClientId(), AWSIotMqttQos.QOS0, callback);
     }
 
+    public void getChangeNotification(AWSIotMqttNewMessageCallback callback) {
+        await();
+        mqttManager.subscribeToTopic("notify/change/"+getClientId(), AWSIotMqttQos.QOS0, callback);
+    }
+
     public void getCustomNotification(String topic, AWSIotMqttNewMessageCallback callback) {
         await();
         mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0, callback);
@@ -140,12 +145,16 @@ public class AWSMqtt {
         mqttManager.unsubscribeTopic("notify/delete");
     }
 
-    public void removeGetLocation() {
+    public void removeLocationNotification() {
         mqttManager.unsubscribeTopic("notify/location/"+getClientId());
     }
 
-    public void removeGetPosition() {
+    public void removePositionNotification() {
         mqttManager.unsubscribeTopic("notify/position/"+getClientId());
+    }
+
+    public void removeChangeNotification() {
+        mqttManager.unsubscribeTopic("notify/change/"+getClientId());
     }
 
     public void removeCustomNotification(String topic) {

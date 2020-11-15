@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            JSONObject device = jsonObject.getJSONObject("devices");
+                            JSONObject device = jsonObject.getJSONObject("device");
                         } catch (UnsupportedEncodingException | JSONException e) {
                             Log.e(LOG_TAG, "Message encoding error.", e);
                         }
@@ -205,6 +205,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /* By calling this method, you will receive a notification everytime your device changes room/raspberry
+         * You can specify the behaviour when this message comes in in the messageArrived() method specified before, which will run in a separate thread.
+         */
+        awsClient.getChangeNotification(new AWSIotMqttNewMessageCallback() {
+            @Override
+            public void onMessageArrived(String topic, byte[] data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String message = new String(data, "UTF-8");
+                            Log.d(LOG_TAG, "Message arrived:");
+                            Log.d(LOG_TAG, "   Topic: " + topic);
+                            Log.d(LOG_TAG, " Message: " + message);
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONObject device = jsonObject.getJSONObject("device");
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            Log.e(LOG_TAG, "Message encoding error.", e);
+                        }
+                    }
+                });
+            }
+        });
+
         /* By calling this method, you will subscribe to your custom topic, specified as a parameter, and you will receive a message every time something is published on it
          * You can specify the behaviour when this message comes in in the run() method, which will run in a separate thread.
          */
@@ -243,10 +274,13 @@ public class MainActivity extends AppCompatActivity {
         awsClient.removeDeleteDevicesNotification();
 
         // By calling this method, you will unsubscribe from the 'notify/location/uuid' topic and you won't receive such a notification anymore.
-        awsClient.removeGetLocation();
+        awsClient.removeLocationNotification();
 
         // By calling this method, you will unsubscribe from the 'notify/position/uuid' topic and you won't receive such a notification anymore.
-        awsClient.removeGetPosition();
+        awsClient.removePositionNotification();
+
+        // By calling this method, you will unsubscribe from the 'notify/change/uuid' topic and you won't receive such a notification anymore.
+        awsClient.removeChangeNotification();
 
         // By calling this method, you will unsubscribe from the topic specified as a parameter.
         awsClient.removeCustomNotification("custom/topic");
@@ -323,10 +357,15 @@ public class MainActivity extends AppCompatActivity {
          */
         mqttClient.getLocationNotification();
 
-        /* By calling this method, receive you updated current location continuously until you unsubscribe from it.
+        /* By calling this method, you will receive your updated current location continuously until you unsubscribe from it.
          * You can specify the behaviour when this message comes in in the messageArrived() method specified before, which will run in a separate thread.
          */
         mqttClient.getPositionNotification();
+
+        /* By calling this method, you will receive a notification everytime your device changes room/raspberry
+         * You can specify the behaviour when this message comes in in the messageArrived() method specified before, which will run in a separate thread.
+         */
+        mqttClient.getChangeNotification();
 
         /* By calling this method, you will subscribe to your custom topic, specified as a parameter, and you will receive a message every time something is published on it
          * You can specify the behaviour when this message comes in in the messageArrived() method specified before, which will run in a separate thread.
@@ -340,10 +379,13 @@ public class MainActivity extends AppCompatActivity {
         mqttClient.removeDeleteDevicesNotification();
 
         // By calling this method, you will unsubscribe from the 'notify/location/uuid' topic and you won't receive such a notification anymore.
-        mqttClient.removeGetLocation();
+        mqttClient.removeLocationNotification();
 
         // By calling this method, you will unsubscribe from the 'notify/position/uuid' topic and you won't receive such a notification anymore.
-        mqttClient.removeGetPosition();
+        mqttClient.removePositionNotification();
+
+        // By calling this method, you will unsubscribe from the 'notify/change/uuid' topic and you won't receive such a notification anymore.
+        mqttClient.removeChangeNotification();
 
         // By calling this method, you will unsubscribe from the topic specified as a parameter.
         mqttClient.removeCustomNotification("custom/topic");

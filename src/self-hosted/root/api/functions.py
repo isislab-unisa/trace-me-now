@@ -11,7 +11,7 @@ from bson.json_util import dumps
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = settings.MONGO_URI # 'mongodb://127.0.0.1:27017/globalStatus'
+app.config['MONGO_URI'] = settings.MONGO_URI
 mongo = PyMongo(app)
 
 def new_device(_json):
@@ -33,6 +33,24 @@ def new_device(_json):
         print("Error adding device!")
         return False
 
+def get_device_position(_json):
+    _uuid = _json['uuid']
+
+    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
+
+    res = {"roomNumber": device["roomNumber"], "lastPosition": device["lastPosition"]}
+    mqtt_client.publish("notify/location/"+_uuid.upper(), dumps(res))
+    return res
+
+def get_device(_json):
+    _uuid = _json['uuid']
+
+    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
+
+    res = {"device": {"uuid": device["uuid"], "lastSeen": device["lastSeen"], "lastPosition": device["lastPosition"], "roomNumber": device["roomNumber"], "raspberryId": device["raspberryId"]}}
+    
+    return res
+
 def update_devices(_json):
     _devices = _json['devices']
 
@@ -44,7 +62,7 @@ def update_devices(_json):
         _raspberryId = device['raspberryId']
 
         res = {"roomNumber": _roomNumber, "lastPosition": _lastPosition}
-        print("notify/position/"+_uuid.upper())
+        
         mqtt_client.publish("notify/position/"+_uuid.upper(), dumps(res))
 
         d = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
@@ -91,22 +109,3 @@ def delete_device(_json):
         return True
     else:
         return False
-
-def get_device_position(_json):
-    _uuid = _json['uuid']
-
-    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
-
-    res = {"roomNumber": device["roomNumber"], "lastPosition": device["lastPosition"]}
-    mqtt_client.publish("notify/location/"+_uuid.upper(), dumps(res))
-    return res
-
-def get_device(_json):
-    _uuid = _json['uuid']
-
-    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
-
-    res = {"uuid": device["uuid"], "lastSeen": device["lastSeen"], "lastPosition": device["lastPosition"], "roomNumber": device["roomNumber"], "raspberryId": device["raspberryId"]}
-    
-    return res
-

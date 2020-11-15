@@ -35,7 +35,7 @@ public class BleSetup {
         this.maj = maj;
     }
 
-    public void startTransmitting() {
+    public boolean startTransmitting() {
         if(checkBluetooth()) {
             String s;
             byte[] uuidBeacon;
@@ -64,6 +64,10 @@ public class BleSetup {
             iBeacon = new iBeacon(uuidBeacon, maj, min, AdvertiseSettings.ADVERTISE_MODE_BALANCED, AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM, "iBeacon");
 
             iBeacon.start();
+
+            return true;
+        } else {
+            return false;
         }
     }
 

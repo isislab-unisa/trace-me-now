@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String serverPort = "5000";
 
     private OnPremiseMqtt mqttClient;
+    private AWSMqtt awsClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
          * NOTE: if you use AWSMqtt, you won't use OnPremiseMqtt and vice versa.
          */
 
-        AWSMqtt awsClient = new AWSMqtt(this, this, "a26sbz9d6nds4r-ats.iot.us-east-1.amazonaws.com", "us-east-1:fb46622a-bcf0-4b7b-92f9-3161f47af674");
+        awsClient = new AWSMqtt(this, this, "a26sbz9d6nds4r-ats.iot.us-east-1.amazonaws.com", "us-east-1:fb46622a-bcf0-4b7b-92f9-3161f47af674");
         awsClient.connect();
 
         /* By calling this method, you will subscribe to the 'notify/new' topic and you will receive a message every time a new device comes in
@@ -365,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
 
             Request get = new Request.Builder()
-                    .url("http://" + ipAddress + ":" + serverPort + "/getDevices")
+                    .url("http://" + ipAddress + ":" + serverPort + "/getDevices") // NOTE: use https:// if your server is running on HTTPS
                     .build();
 
             try {

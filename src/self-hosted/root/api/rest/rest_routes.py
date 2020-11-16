@@ -28,7 +28,7 @@ def get_device(uuid):
     res = functions.get_device(_json)
     return res
 
-@app.route('/getDevicePosition', methods=['POST'])
+@app.route('/getDeviceLocation', methods=['POST'])
 def get_device_position():
     _json = request.json
     res = functions.get_device_position(_json)

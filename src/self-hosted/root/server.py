@@ -1,3 +1,4 @@
+import root.settings as settings
 from root.api.rest.rest_routes import app
 import root.api.mqtt.mqtt_routes as mqtt
 from werkzeug.serving import run_simple 

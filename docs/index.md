@@ -16,6 +16,8 @@ Trace Me Now is an open-source framework which helps developers in building thei
   - [AwsMqtt](#awsmqtt)
 - [Raspberry Pi Library](#raspberry-pi-library)
 - [On-premise Server Library](#on-premise-server-library)
+  - [APIs](#apis)
+- [Amazon Web Services](#amazon-web-services)
 - [Notification System](#notification-system)
 
 ## Android Library
@@ -80,7 +82,7 @@ The `OnPremiseMqtt` allows you to receive notifications from the system, when us
 
 **NOTE: if you use OnPremiseMqtt, you won't use AWSMqtt and vice versa.**
 
-*If you want to know more about the notification system, take a look to [Notification System](#notification-system).*
+*If you want to know more about the notification system, please take a look to [Notification System](#notification-system).*
 
 Here, first thing you have to do is to define a callback, which mainly defines the behaviour when a message arrives
 
@@ -126,7 +128,7 @@ MqttCallbackExtended callback = new MqttCallbackExtended() {
         };
 ```
 
-In the `messageArrived()` method you can check from wich topic the message arrives and define a specific behaviour.
+In the `messageArrived()` method you can check from which topic the message arrives and define a specific behaviour.
 
 Now you can instantiate your mqtt client
 
@@ -230,7 +232,7 @@ The `AwsMqtt` allows you to receive notifications from the system, when using a 
 
 **NOTE: if you use AWSMqtt, you won't use OnPremiseMqtt and vice versa.**
 
-*If you want to know more about the notification system, take a look to [Notification System](#notification-system).*
+*If you want to know more about the notification system, please take a look to [Notification System](#notification-system).*
 
 First thing you have to do is to instantiate an object of the `AwsMqtt` class
 
@@ -565,6 +567,225 @@ bleScanner.startScanning();
 ```
 
 That's it! The framework will do all the heavy work of sensing devices, localizing them, keeping a local track of them, and synchronize with your back-end, be it serverless or on premise!
+
+If you want to configure some new action and generate a new event, which has to be triggered by your back-end, you can use
+
+```javascript
+foo = (someData) => {
+    // do some operation
+    bleScanner.newEvent('event/new', someData);
+}
+```
+
+By doing so, you define a new function with your desired behaviour, and when you're ready, you can publish the result with the `newEvent()` function on the specified MQTT topic.
+
+*If you want to know more about the notification system, please take a look to [Notification System](#notification-system).*
+
+This event will be triggered by your back-end, either serverless or serveful, in which you can define your custom events.
+
+*If you want to know more about how to configure new events in your back-end, please take a look to [On-premise Server Library](#on-premise-server-library) or [Amazon Web Services](#amazon-web-services).*
+
+## On-premise Server Library
+
+This is a python module which lets you easily build your custom on-premise server, handling every event and notification, and managing the communication with a MongoDB NoSQL database - *i.e.*, keeping track of the global status of your system. All of this heavy lifting of managing everything is delegated to the framework itself, all you have to do is launch a new server, and create your custom triggers to events and notifications. Alright, let's start!
+
+At first, you will need to install some few dependencies
+
+```bash
+- git
+- pip or pip3
+- python or python3
+- mosquitto
+```
+
+With `git` you can clone the entire repository 
+
+```bash
+~$ git clone https://github.com/isislab-unisa/trace-me-now
+```
+
+or just download the `src/self-hosted/` folder.
+
+`pip` or `pip3` is used to install all the framework needed dependencies. So move to the `root/` folder and install them.
+
+```bash
+~$ cd trace-me-now/src/self-hosted/root/
+~$ sudo pip3 install -r requirements.txt
+```
+
+Create a new MongoDB database named `globalStatus` and a new collection named `devices`.
+
+Before start developing, take a look to the `src/self-hosted/root/settings.py` file.
+
+```python
+# Flask settings
+FLASK_DEBUG = True  # Do not use debug mode in production
+
+# Flask-Restplus settings
+RESTPLUS_SWAGGER_UI_DOC_EXPANSION = 'list'
+RESTPLUS_VALIDATE = True
+RESTPLUS_MASK_SWAGGER = False
+RESTPLUS_ERROR_404_HELP = False
+
+# MongoDB Settings
+MONGO_URI = 'mongodb://127.0.0.1:27017/globalStatus'
+
+# MQTT Settings
+MQTT_ADDRESS = 'localhost'
+MQTT_PORT = 1883
+MQTT_TIMEOUT = 60
+```
+
+You might want to change some parameter of it, or maybe you want to use the default settings.
+
+Now you're ready to go!
+
+*You may way want to take a look to the `src/self-hosted/example.py` file to undesrstand better how to use this module, even though its usage is quite simple.*
+
+If you want to start from scratch, start building your project at the same level of the `root/` folder. Create a new python file and import the module as follows
+
+```python
+import root.server as server
+```
+
+In order to start your server use
+
+```python
+server.start_server()
+```
+
+which can be added in your main function or in a different one.
+
+That's it! Your back-end will now handle each [default event](#notification-system), manage the communication with your MongoDB database, and provide you APIs, which are reported [here](#apis).
+
+If you want to listen to a custom event, you will have to define a new function in a string variable, using the python syntax, and add a new event, by specifying the topic where the event is triggered, the topic where to publish a response, and the behaviour when the event is generated (defined in the function described before).
+
+```python
+foo = """def new_function(_message):
+            // do some operation
+            return some_value"""
+
+server.new_event("event/new", "event/response", foo)
+```
+
+### APIs
+
+The python module, besides managing events through MQTT protocol, offers you a series of APIs that could be useful in many scenarios. Here are reported all the provided APIs.
+
+- `server-address/getDevices` method `GET`: it returns an array of all devices present in the system at the moment
+```json
+// response
+
+{
+    "devices": [
+        {
+            "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+            "lastPosition": "1.26",
+            "lastSeen": "11:20",
+            "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+            "roomNumber": "1"
+        },
+        {
+            "uuid": "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+            "lastPosition": "1.62",
+            "lastSeen": "11:23",
+            "raspberryId": "550e8400-e29b-41d4-a716-446655440000",
+            "roomNumber": "2"
+        },
+        ...
+    ]
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-address/getDevice/<uuid>` method `GET`: it returns the device with the specified uuid
+```json
+// response
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-address/getDeviceLocation` method `POST`: it returns the desired device's actual location once, which uuid must be specified in the request body
+```json
+// request body
+
+{ "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95" }
+```
+```json
+// response
+
+{
+    "lastPosition": "1.26",
+    "roomNumber": "1"
+}
+``` 
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-address/newDevice` method `POST`: it adds the device specified in the request body
+```json
+// request body
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-address/deleteDevice` method `POST`: it deletes the device specified in the request body
+```json
+// request body
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-address/updateDevices` method `POST`: it updates all the devices specified in the request body
+```json
+// request body
+
+{
+    "devices": [
+        {
+            "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+            "lastPosition": "1.26",
+            "lastSeen": "11:20",
+            "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+            "roomNumber": "1"
+        },
+        {
+            "uuid": "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+            "lastPosition": "1.62",
+            "lastSeen": "11:23",
+            "raspberryId": "550e8400-e29b-41d4-a716-446655440000",
+            "roomNumber": "2"
+        },
+        ...
+    ]
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+
+## Amazon Web Services
+
+
 
 ## Notification System
 

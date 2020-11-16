@@ -1,0 +1,11 @@
+flask
+flask-sqlalchemy
+flask-restplus
+Werkzeug==0.16.1
+jsonpickle
+Flask-PyMongo
+paho-mqtt
+Flask-Jsonpify
+bson
+pymongo
+flask_pymongo

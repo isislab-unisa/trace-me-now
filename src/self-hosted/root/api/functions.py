@@ -33,15 +33,6 @@ def new_device(_json):
         print("Error adding device!")
         return False
 
-def get_device_position(_json):
-    _uuid = _json['uuid']
-
-    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
-
-    res = {"roomNumber": device["roomNumber"], "lastPosition": device["lastPosition"]}
-    mqtt_client.publish("notify/location/"+_uuid.upper(), dumps(res))
-    return res
-
 def get_device(_json):
     _uuid = _json['uuid']
 
@@ -49,6 +40,15 @@ def get_device(_json):
 
     res = {"device": {"uuid": device["uuid"], "lastSeen": device["lastSeen"], "lastPosition": device["lastPosition"], "roomNumber": device["roomNumber"], "raspberryId": device["raspberryId"]}}
     
+    return res
+
+def get_device_position(_json):
+    _uuid = _json['uuid']
+
+    device = mongo.db.devices.find_one({"uuid": _uuid}, {"uuid": 1, "lastSeen": 1, "lastPosition": 1, "roomNumber": 1, "raspberryId": 1})
+
+    res = {"roomNumber": device["roomNumber"], "lastPosition": device["lastPosition"]}
+    mqtt_client.publish("notify/location/"+_uuid.upper(), dumps(res))
     return res
 
 def update_devices(_json):

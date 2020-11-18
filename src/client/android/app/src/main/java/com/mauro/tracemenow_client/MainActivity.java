@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "[IOT CORE]";
 
-    private static final String ipAddress = "192.168.1.198";
+    private static final String ipAddress = "192.168.1.115";
     private static final String mosquittoPort = "1883";
-    private static final String serverPort = "5000";
+    private static final String serverPort = "8000";
 
     private OnPremiseMqtt mqttClient;
     private AWSMqtt awsClient;

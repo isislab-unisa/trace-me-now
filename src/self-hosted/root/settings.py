@@ -1,4 +1,6 @@
 # Flask settings
+FLASK_ADDRESS = '0.0.0.0' # 0.0.0.0 is used as default address and it will make your server visible with your machine's IP address
+FLASK_PORT = 8888 
 FLASK_DEBUG = True  # Do not use debug mode in production
 
 # Flask-Restplus settings

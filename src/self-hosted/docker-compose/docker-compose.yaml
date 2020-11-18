@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  mongo-db:
+    image: mongo:latest
+    hostname: mongo-db
+    container_name: db-mongo
+    environment:
+      - MONGO_INITDB_DATABASE=globalStatus
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongo-volume:/data/db
+    ports:
+      - "27017-27019:27017-27019"
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"

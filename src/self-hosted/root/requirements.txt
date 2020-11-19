@@ -6,6 +6,5 @@ jsonpickle
 Flask-PyMongo
 paho-mqtt
 Flask-Jsonpify
-bson
 pymongo
 flask_pymongo

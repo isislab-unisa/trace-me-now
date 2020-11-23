@@ -128,10 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+src/self-hosted/docker/docker-compose/mongo-volume/
+src/self-hosted/docker/dockerimage/Dockerfile.backup
+
 # NodeJS
 node_modules/
 .env
-e35a5767bc-certificate.pem.crt
-e35a5767bc-private.pem.key
-e35a5767bc-public.pem.key
-certs/

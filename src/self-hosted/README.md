@@ -23,8 +23,6 @@ Then you will need to move in the `docker-compose` folder, and only for the firs
 
 This script will create a folder in your home path called `self-hosted`. This folder will be shared with the docker container equipped with the environment needed to run your own server. You will find in it a folder called `root/`, which contains the on-premise framework, and a file named `main.py`. You will start developing your server in this file, and you can even add as many files and directories as you want at the same level of the `root/` folder. Every change you apply to `/home/$USER/self-hosted/` will be applied on `/home/self-hosted/` in the container as well.
 
-Moreover, the script will start the MongoDB and the Mosquitto services, as well as the python server, since the `main.py` file is provided with a little example.
-
 Notice that you may need to change the `root/settings.py` file with your custom configurations
 
 ```python

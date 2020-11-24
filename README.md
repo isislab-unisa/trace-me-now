@@ -585,7 +585,7 @@ This event will be triggered by your back-end, either serverless or serveful, in
 
 *If you want to know more about how to configure new events in your back-end, please take a look to [On-premise Server Library](#on-premise-server-library) or [Amazon Web Services](#amazon-web-services).*
 
-## On-premise Server Library
+## Self Hosted Server Library
 
 This is a python module which lets you easily build your custom on-premise server, handling every event and notification, and managing the communication with a MongoDB NoSQL database - *i.e.*, keeping track of the global status of your system. All of this heavy lifting of managing everything is delegated to the framework itself, all you have to do is launch a new server, and create your custom triggers to events and notifications. Alright, let's start!
 

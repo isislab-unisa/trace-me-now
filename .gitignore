@@ -130,6 +130,7 @@ dmypy.json
 
 src/self-hosted/docker/docker-compose/mongo-volume/
 src/self-hosted/docker/dockerimage/Dockerfile.backup
+src/self-hosted/docker/dockerimage/script.sh
 
 # NodeJS
 node_modules/

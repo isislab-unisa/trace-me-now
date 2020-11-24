@@ -12,4 +12,4 @@ RUN pip3 install flask flask-sqlalchemy flask-restplus Werkzeug==0.16.1 jsonpick
 
 RUN mkdir -p /home/self-hosted/
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "python3 /home/self-hosted/main.py"]

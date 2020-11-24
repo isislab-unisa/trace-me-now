@@ -22,8 +22,9 @@ services:
     ports:
       - "1883:1883"
       - "9001:9001"
-  # python-server:
-    # image: python-server:latest
-    # container_name: python-server
-    # volumes:
-      # - /home/$USER/self-hosted/:/home/self-hosted/
+  python-server:
+    image: python-server:latest
+    container_name: python-server
+    volumes:
+    - $HOME/self-hosted/:/home/self-hosted/
+    command: python3 /home/self-hosted/main.py

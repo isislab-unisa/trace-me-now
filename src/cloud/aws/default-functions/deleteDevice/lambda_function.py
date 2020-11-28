@@ -17,10 +17,11 @@ def lambda_handler(event, context):
                 'uuid': uuid
             }
         )
-    except ClientError as e:
-        if e.response['Error']['Code'] == "ConditionalCheckFailedException":
-            print(e.response['Error']['Message'])
-        else:
-            raise
+    except:
+        print('Closing lambda function')
+        return {
+            'statusCode': 400,
+            'body': json.dumps('Error deleting device')
+        }
     else:
         return response

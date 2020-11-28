@@ -132,6 +132,9 @@ src/self-hosted/docker/docker-compose/mongo-volume/
 src/self-hosted/docker/dockerimage/Dockerfile.backup
 src/self-hosted/docker/dockerimage/script.sh
 
+src/cloud/aws/export.sh
+src/cloud/aws/apis.txt
+
 # NodeJS
 node_modules/
 .env

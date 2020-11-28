@@ -54,7 +54,7 @@ which will run MongoDB, Mosquitto, and your server environment in three differen
 If you want to access to the server environment container bash, just run
 
 ```bash
-~$ docker exec -it python-server bash
+~$ docker exec -it tracemenow-server bash
 ```
 
 If you have a look to the `main.py` file you will find this

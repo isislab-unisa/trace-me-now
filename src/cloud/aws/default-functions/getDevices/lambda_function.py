@@ -2,14 +2,13 @@ import json
 import boto3
 
 def lambda_handler(event, context):  
+    
     dynamodb = boto3.resource('dynamodb')  
     
     globalStatus = dynamodb.Table('globalStatus') 
     
-    uuid = event['uuid']
-    
-    response = globalStatus.get_item(Key{'uuid': uuid})  
+    response = globalStatus.scan()  
     
     return {    
-        'device': response['Items'] 
+        'devices': response['Items'] 
     }

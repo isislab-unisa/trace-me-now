@@ -2,6 +2,14 @@
 
 This is a python module which lets you easily build your custom on-premise server, handling every event and notification, and managing the communication with a MongoDB NoSQL database - *i.e.*, keeping track of the global status of your system. All of the heavy lifting of managing everything is delegated to the framework itself, all you have to do is launch a new server, and create your custom triggers to events and notifications. Alright, let's start!
 
+# Table of Contents
+- [Configuration](#configuration)
+- [Initial deployment](#initial-deployment)
+- [Custom functions and events](#custom-functions-and-events)
+- [APIs](#apis)
+
+## Configuration
+
 At first, you will need to install `docker` and `docker-compose`, for which it's highly recommended the official docker documentation. It will be used a docker-compose file which automates the deployment and allows you to easily satisfy the server dependencies. In fact, it will provide you with three containers: a container which will run a MongoDB service, another one for the Mosquitto service, and a third one that provides you with the environment to run your own server, without having to install all the needed dependencies.
 
 Notice that the above is for information purposes only, you won't need to setup anything, instead, everything will be autoconfigured. Alright, let's start!
@@ -43,6 +51,8 @@ MQTT_TIMEOUT = 60
 
 Even though the MongoDB and Mosquitto services run in isolated containers, they will be seen from the external with the host machine IP address. So, replace `<your host machine IP address>` with your host machine IP address, so that your server will have access to them. Your server will be seen from the external with your host machine IP address as well, but if you want to access to it from the machine itself (for instance, to test the APIs), you will have to use the container IP address.
 
+## Initial deployment
+
 Now you can develop your server from your host machine with your favorite IDE, and when you're ready to launch or test it, you can launch the docker-compose file with
 
 ```bash
@@ -56,6 +66,8 @@ If you want to access to the server environment container bash, just run
 ```bash
 ~$ docker exec -it tracemenow-server bash
 ```
+
+## Custom functions and events
 
 If you have a look to the `main.py` file you will find this
 
@@ -83,3 +95,121 @@ Now you can add your custom events and notifications, as many as you want. In or
 Then, by calling the `new_event()` method, you will create a new event to be triggered. The first parameter defines the topic where the event is generated, the second parameter defines the topic where a response is provided (such as a notification), and the third one is the function defined before, which defines the actions to take when the event is triggered.
 
 Now you're ready to go! You can define as many new events as you want with so much simplicity, while still benefitting of the default events provided and managed by the framework itself!
+
+## APIs
+
+The default provided APIs are documented in this section.
+
+- `server-ip/getDevices` method `GET`: it returns an array of all devices present in the system at the moment
+```json
+// response
+
+{
+    "devices": [
+        {
+            "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+            "lastPosition": "1.26",
+            "lastSeen": "11:20",
+            "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+            "roomNumber": "1"
+        },
+        {
+            "uuid": "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+            "lastPosition": "1.62",
+            "lastSeen": "11:23",
+            "raspberryId": "550e8400-e29b-41d4-a716-446655440000",
+            "roomNumber": "2"
+        }
+    ]
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-ip/getDevice/` method `POST`: it returns the device with the specified uuid
+```json
+// request body
+
+{ "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95" }
+```
+```json
+// response
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-ip/getDeviceLocation` method `POST`: it returns the desired device's actual location once, which uuid must be specified in the request body
+```json
+// request body
+
+{ "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95" }
+```
+```json
+// response
+
+{
+    "lastPosition": "1.26",
+    "roomNumber": "1"
+}
+``` 
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-ip/newDevice` method `POST`: it adds the device specified in the request body
+```json
+// request body
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-ip/deleteDevice` method `POST`: it deletes the device specified in the request body
+```json
+// request body
+
+{ 
+    "device": {
+        "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+        "lastPosition": "1.26",
+        "lastSeen": "11:20",
+        "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+        "roomNumber": "1"
+    }
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.
+- `server-ip/updateDevices` method `POST`: it updates all the devices specified in the request body
+```json
+// request body
+
+{
+    "devices": [
+        {
+            "uuid": "6B41805F-C5DB-47B6-9745-D96F42138D95",
+            "lastPosition": "1.26",
+            "lastSeen": "11:20",
+            "raspberryId": "249bae15-9d9e-494a-8c74-8c510153d378",
+            "roomNumber": "1"
+        },
+        {
+            "uuid": "B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+            "lastPosition": "1.62",
+            "lastSeen": "11:23",
+            "raspberryId": "550e8400-e29b-41d4-a716-446655440000",
+            "roomNumber": "2"
+        },
+    ]
+}
+```
+You will receive a status code `200` if your request was fine, `404` otherwise.

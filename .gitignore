@@ -134,6 +134,10 @@ src/self-hosted/docker/dockerimage/script.sh
 
 src/cloud/aws/export.sh
 src/cloud/aws/apis.txt
+src/cloud/aws/prova.sh
+src/cloud/aws/initialize.backup
+src/cloud/aws/iot-rules/write-rules.sh
+src/cloud/aws/iot-rules/*.json
 
 # NodeJS
 node_modules/

@@ -1,5 +1,9 @@
 #!/bin/sh
-post="POST"
+if [ -z "$1" ] && [ -z "$2" ] && [ -z "$3" ]; then
+    echo "usage: ./api-deploy.sh <api-name> <function-name> <method>"
+    exit 0
+fi
+
 stage_name="tracemenow"
 api_name=$1
 function_name=$2
@@ -54,7 +58,10 @@ aws lambda add-permission \
 
 aws apigateway create-deployment --rest-api-id $api_id --stage-name $stage_name
 
-echo "API: /${api_name}" >> apis.txt
-echo "  - Method: ${method}" >> apis.txt
-echo "  - At: https://${api_id}.execute-api.${AWS_REGION}.amazonaws.com/${stage_name}/${api_name}" >> apis.txt
-echo "" >> apis.txt
+{
+    echo "API"
+    echo "  - Name: ${api_name}"
+    echo "  - Method: ${method}"
+    echo "  - At: https://${api_id}.execute-api.${AWS_REGION}.amazonaws.com/${stage_name}/${api_name}"
+    echo ""
+} >> apis.txt

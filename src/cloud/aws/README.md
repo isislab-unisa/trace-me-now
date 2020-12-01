@@ -83,7 +83,7 @@ Once the script will be finished its execution, you will end up with:
 - all the default APIs configured on your API Gateway as triggers for the lambda functions;
 - a new file `src/cloud/aws/apis.txt` which describes the uploaded APIs and their own endpoints in order to use them;
 - all the default IoT rules configured on your IoT Core as triggers for the lambda functions;
-- a new thing on you IoT Core platform named `RaspberryPi`, with an attached certificate to wich is attached a policy named `RaspberryPiPolicy`
+- a new thing on your IoT Core platform named `RaspberryPi`, with an attached certificate to wich is attached a policy named `RaspberryPiPolicy`
 - three new files in `src/cloud/aws/` folder named `raspberry_certificate.pem.crt`, `raspberry_public_key.pem`, and `raspberry_private_key.pem`.
 
 **IMPORTANT:** remove the three files – `raspberry_certificate.pem.crt`, `raspberry_public_key.pem`, and `raspberry_private_key.pem` – from there and place them on your Raspberry Pi boards in `raspberry/root/certs/`. They will need those files in order to authenticate and to prove their identities to the IoT Core platform.

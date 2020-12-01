@@ -1,4 +1,3 @@
-
 # Trace Me Now
 
 Trace Me Now is an open-source framework which helps developers in building their own IoT-based localization and tracking systems. Its aim is to let developers build systems capable of localizing and keeping track of people through their smartphones, using *Bluetooth Low Energy (BLE)* technology. For doing that, Trace Me Now offers a client library -  available for Android only, with future developments will be available for iOS as well - that allows to transmit BLE packets in broadcast, which will be sensed by Raspberry Pi boards. In fact, this framework provides a library for Raspberry Pi boards too, which will allow to sense, localize, and keep track of the users' smartphones. Furthermore, Raspberry Pis will have to interact with a back-end, as the client as well. You can choose between building a serverless application or not. If so, you can choose AWS or Microsoft Azure as cloud provider; otherwise Trace Me Now offers you a python library for easily developing a server for an on-premise solution. Below are reported the two general architecture you can build by using this framework.
@@ -27,7 +26,7 @@ Notifications are handled through MQTT protocol. For each event, there are two M
 
 - if you subscribe to *notify/position/**uuid*** you will constantly receive updates of every move of the device with the specified **uuid**.
 
-- *if you subscribe to *notify/change/**uuid*** you will receive a notification every time the device with the specified **uuid** changes room/raspberry.
+- if you subscribe to *notify/change/**uuid*** you will receive a notification every time the device with the specified **uuid** changes room/raspberry.
 
 You can create any custom event-notification by specifying the event topic and the notification topic.
 

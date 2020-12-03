@@ -214,6 +214,12 @@ mqttClient.removeCustomNotification("custom/topic");
 
 By calling this method, you will unsubscribe from the topic specified as a parameter.
 
+```java
+mqttClient.publishTo("custom/topic", "message");
+```
+
+With this method you can publish the message 'message' onto the topic 'custom/topic'.
+
 ## AwsMqtt
 
 The `AwsMqtt` allows you to receive notifications from the system, when using a serverless back-end running on AWS, and to define a behaviour for each notification, as well as remove reception of notifications.
@@ -474,3 +480,9 @@ awsClient.removeCustomNotification("custom/topic");
 ```
 
 By calling this method, you will unsubscribe from the topic specified as a parameter.
+
+```java
+awsClient.publishTo("custom/topic", "message");
+```
+
+With this method you can publish the message 'message' onto the topic 'custom/topic'.

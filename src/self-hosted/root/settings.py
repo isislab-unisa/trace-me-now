@@ -10,10 +10,10 @@ RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
 # MongoDB Settings
-MONGO_URI = 'mongodb://192.168.1.198:27017/globalStatus'
+MONGO_URI = 'mongodb://<your host machine IP address>:27017/globalStatus'
 
 # MQTT Settings
-MQTT_ADDRESS = '192.168.1.198'
+MQTT_ADDRESS = '<your host machine IP address>'
 MQTT_PORT = 1883
 MQTT_TIMEOUT = 60
 

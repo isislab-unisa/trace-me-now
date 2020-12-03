@@ -88,9 +88,9 @@ It imports the framework with the name `server` and you can start your server by
 
 That's it! Your server is running and will handle all the default notifications and provide the APIs for you.
 
-*If you want to know more about default notifications and APIs, please visit the dedicated sections.*
+*If you want to know more about default notifications and APIs, please visit the [APIs](#apis) and [Notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev#notification-system) sections.*
 
-Now you can add your custom events and notifications, as many as you want. In order to do that, you can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered.
+Now you can add your custom events and notifications, as many as you want. In order to do that, you can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered. The parameter `_message` which the function takes in input, is the message received on the triggering MQTT topic. So, `_message` will contain the data sent on that topic, and you can use such data for your purposes and for creating your response.
 
 Then, by calling the `new_event()` method, you will create a new event to be triggered. The first parameter defines the topic where the event is generated, the second parameter defines the topic where a response is provided (such as a notification), and the third one is the function defined before, which defines the actions to take when the event is triggered.
 

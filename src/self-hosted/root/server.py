@@ -14,8 +14,3 @@ def start_thread():
 
 def new_event(topic_event, topic_response, function):
     mqtt.new_event(topic_event, topic_response, function)
-
-'''
-if __name__ == "__main__":
-    start_server()
-'''

@@ -25,7 +25,7 @@ and add the dependency
 
 ```gradle
 dependencies {
-        implementation 'com.github.spike322:tracemenow-android-library:Tag'
+        implementation 'com.github.spike322:trace-me-now-android-client:0.0.1'
 }
 ```
 

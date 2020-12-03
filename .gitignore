@@ -139,6 +139,9 @@ src/cloud/aws/initialize.backup
 src/cloud/aws/iot-rules/write-rules.sh
 src/cloud/aws/iot-rules/*.json
 
+requirements.md
+requirements.pdf
+
 # NodeJS
 node_modules/
 .env

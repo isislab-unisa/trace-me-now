@@ -1,4 +1,5 @@
 import root.settings as settings
+import root.api.rest.rest_routes as rest
 from root.api.rest.rest_routes import app
 import root.api.mqtt.mqtt_routes as mqtt
 from werkzeug.serving import run_simple 
@@ -22,3 +23,6 @@ def start_thread_https():
 
 def new_event(topic_event, topic_response, function):
     mqtt.new_event(topic_event, topic_response, function)
+
+def new_api(foo, path, method):
+    rest.new_api(foo, path, method)

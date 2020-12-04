@@ -59,4 +59,4 @@ def new_event(topic_event, topic_response, function):
     new_event = {"event": topic_event, "response": topic_response, "function": function}
     mqtt_client.subscribe(topic_event)
     events.append(new_event)
-    #print(events)
+

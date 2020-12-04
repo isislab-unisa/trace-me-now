@@ -1,10 +1,39 @@
 import root.server as server
 
 if __name__ == "__main__":
-    server.start_server_https()
-    
-    foo = """def new_function(_message):
-                // do some operation
-                return some_value"""
+    foo = """
+def get_function(_json):
+    res = jsonify(_json)
+    res.status_code = 200
 
-    server.new_event("event/new", "event/response", foo)
+    return res"""
+
+    server.new_api(foo, 'getResponse', 'GET')
+
+    foo = """
+def post_function(_json):
+    pymongo = Flask(__name__)
+
+    pymongo.config['MONGO_URI'] = "mongodb://localhost:27017/newTable"
+    mongo = PyMongo(pymongo)
+
+    mongo.db.newCollection.insert({
+            'newValue': _json['value']
+        })
+
+    res = jsonify("Value added succesfully!")
+    res.status_code = 200
+
+    return res"""
+
+    server.new_api(foo, 'newValue', 'POST')
+
+    server.start_server_https()
+
+    foo = """
+def new_event(_message):
+    upper = _message.upper()
+
+    return upper"""
+
+    server.new_event('event/new', 'event/new/response', foo)

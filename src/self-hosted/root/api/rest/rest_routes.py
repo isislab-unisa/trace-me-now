@@ -4,17 +4,21 @@ import bson.json_util as json_util
 from flask import Flask
 from flask import jsonify, request
 from flask_pymongo import PyMongo
-from .. import functions
 from bson.json_util import dumps
 from bson.json_util import loads
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+from types import FunctionType 
+from bson.json_util import dumps
+from bson.json_util import loads
 from .. import functions
 
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = settings.MONGO_URI
 mongo = PyMongo(app)
+
+routes = []
 
 @app.route('/getDevices')
 def get_devices():
@@ -76,6 +80,45 @@ def update_devices():
 
 @app.errorhandler(404)
 def not_found(error=None):
+    return err()
+
+# def start():
+  #  app.run(debug=True)
+
+def new_api(foo, path, method):
+    new_route = {"foo": foo, "path": path, "method": method}
+    routes.append(new_route)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def get_dir(path):
+    for route in routes:
+        print(route['path'])
+        if route['path'] == path and route['method'] == 'GET':
+            f_code = compile(route['foo'], "<string>", "exec") 
+            f_func = FunctionType(f_code.co_consts[0], globals(), "gfg") 
+            
+            value = f_func(request.json)
+
+            return value
+        
+    return err()
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>', methods=['POST'])
+def post_dir(path):
+    for route in routes:
+        if route['path'] == path and route['method'] == 'POST':
+            f_code = compile(route['foo'], "<string>", "exec") 
+            f_func = FunctionType(f_code.co_consts[0], globals(), "gfg") 
+            
+            value = f_func(request.json)
+
+            return value
+ 
+    return err()
+
+def err():
     message = {
         'status': 404,
         'message': 'Not found' + request.url
@@ -85,6 +128,3 @@ def not_found(error=None):
     res.status_code = 404
 
     return res
-
-def start():
-    app.run(debug=True)

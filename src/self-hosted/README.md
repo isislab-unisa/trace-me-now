@@ -1,6 +1,6 @@
 # Self Hosted Server
 
-This is a python module which lets you easily build your custom on-premise server, handling every event and notification, and managing the communication with a MongoDB NoSQL database - *i.e.*, keeping track of the global status of your system. All of the heavy lifting of managing everything is delegated to the framework itself, all you have to do is launch a new server, and create your custom triggers to events and notifications. Alright, let's start!
+This is a python module which lets you easily build your custom on-premise server, handling every event and notification, and managing the communication with a MongoDB NoSQL database – *i.e.*, keeping track of the global status of your system –. All of the heavy lifting of managing everything is delegated to the framework itself, all you have to do is launch a new server, and create your custom triggers to events and notifications. Alright, let's start!
 
 # Table of Contents
 - [Configuration](#configuration)
@@ -69,74 +69,95 @@ If you want to access to the server environment container bash, just run
 
 ## Custom functions and events
 
-If you have a look to the `main.py` file you will find this
+If you have a look to the `main.py` file you will find some example.
+
+If you want to start from scratch, first thing you have to do is importing the server module as follow
 
 ```python
 import root.server as server
-
-if __name__ == "__main__":
-    server.start_server()
-    
-    foo = """def new_function(_message):
-                // do some operation
-                return some_value"""
-
-    server.new_event("event/new", "event/response", foo)
 ```
 
-It imports the framework with the name `server` and you can start your server by calling the `start_server()` method.
+With this module, you can easily start your server with
 
-If you want to run you server over the https protocol, you can use
+```python
+server.start_server()
+```
+
+or if you want to run you server over the https protocol, you can use
 
 ```python
 server.start_server_https()
 ```
 
-instead of `server.start_server()`. In order to do that, you have to put your certificate and private key, named respectively `cert.pem` and `key.pem`, in `root/certs/`. You can use your own certificate or you can generate a trial one with
+In order to do that, you have to put your certificate and private key, named respectively `cert.pem` and `key.pem`, in `root/certs/`. You can use your own certificate or you can generate a trial one with
 
 ```bash
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ```
 
-That's it! Your server is running and will handle all the default notifications and provide the APIs for you.
+That's it! Your server is running and will handle all the default notifications and provide the default APIs for you.
 
 *If you want to know more about default notifications and APIs, please visit the [APIs](#apis) and [Notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev#notification-system) sections.*
 
-Now you can add your custom events and notifications, as many as you want. In order to do that, you can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered. The parameter `_message`, which the function takes in input, is the message received on the triggering MQTT topic. So, `_message` will contain the data sent on that topic, and you can use such data for your purposes and for creating your response. The return value of your function will be then published on the response MQTT topic.
+Now you can add your custom events and notifications, as well as custom APIs, as many as you want.
 
-Then, by calling the `new_event()` method, you will create a new event to be triggered. The first parameter defines the topic where the event is generated, the second parameter defines the topic where a response is provided (such as a notification), and the third one is the function defined before, which defines the actions to take when the event is triggered.
-
-The following could be a more clear example
+In order to add a new custom API, you first have to define your API code – *i.e.* the method to be executed when the API is called – as follow
 
 ```python
-import root.server as server
+foo = """
+def post_function(_json):
+    pymongo = Flask(__name__)
 
-if __name__ == "__main__":
-    server.start_server()
-    
-    foo = """
-def new_function(_message):
-    from flask import Flask
-    from flask import jsonify, request
-    from flask_pymongo import PyMongo
-
-    app = Flask(__name__)
-
-    app.config['MONGO_URI'] = "mongodb://192.168.1.115:27017/newTable"
-    mongo = PyMongo(app)
+    pymongo.config['MONGO_URI'] = "mongodb://192.168.1.127:27017/newTable"
+    mongo = PyMongo(pymongo)
 
     mongo.db.newCollection.insert({
-            'newValue': _message
+            'newValue': _json['value']
         })
-    
-    return 'newValue successfully updated with: ' + _message"""
 
-    server.new_event("value/update", "value/update/response", foo)
+    res = jsonify("Value added succesfully!")
+    res.status_code = 200
+
+    return res"""
 ```
 
-In this example, the function imports the needed dependencies only for the execution time, so it will be even more optimized with respect of a common function. Here, when a new value comes from the `value/update` topic, it will be saved in a MongoDB table named `newTable`. Once this value is saved, a response is published on the topic `value/update/reponse`.
+Your code has to be saved in a string variable, and you can use python syntax to write it – you can import modules and do whatever you want inside your method code –.
 
-Now you're ready to go! You can define as many new events as you want with so much simplicity, while still benefitting of the default events provided and managed by the framework itself!
+The parameter `_json` which your function takes in input is the body request content, so that you can use it as you want. The value returned will be the response that has to be sent to the client.
+
+Once you defined your function, you can "deploy" your API as follows
+
+```python
+server.new_api(foo, 'newValue', 'POST')
+```
+
+The first parameter is your function defined before; the second parameter specifies the path where to call your API; the last one specifies your API method – *e.g.*, GET, POST, PUT, etc. –.
+
+*Note that for the API path you won't use the character `/`, it will be automatically added. So, if you set `newValue` as your API path, it will be available at `server_ip_address:server_port/newValue`.*
+
+To define a new event, you will proceed pretty much the same as done with a new API. You can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered. 
+
+```python
+foo = """
+def new_event(_message):
+    upper = _message.upper()
+
+    return upper"""
+```
+
+The parameter `_message`, which the function takes in input, is the message received on the triggering MQTT topic. So, `_message` will contain the data sent on that topic, and you can use such data for your purposes and for creating your response. The return value of your function will be then published on the response MQTT topic.
+
+Once you defined your function, you can create your event as follows
+
+```python
+server.new_event('event/new', 'event/new/response', foo)
+```
+
+The first parameter defines the topic where the event is generated, the second parameter defines the topic where a response is provided (such as a notification), and the third one is the function defined before, which defines the actions to take when the event is triggered.
+
+So, as soon as a new message comes from the first topic, your function will be triggered and will execute, and then will publish a response on the second topic.
+
+Now you're ready to go! You can define as many new events and APIs as you want with so much simplicity.
 
 ## APIs
 

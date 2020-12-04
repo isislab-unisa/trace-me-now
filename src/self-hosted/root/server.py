@@ -9,8 +9,16 @@ def start_server():
     thread.start()
     mqtt.connect()
 
+def start_server_https():
+    thread = threading.Thread(target = start_thread_https)
+    thread.start()
+    mqtt.connect()
+
 def start_thread():
     app.run(host = settings.FLASK_ADDRESS, port = settings.FLASK_PORT)
+
+def start_thread_https():
+    app.run(host = settings.FLASK_ADDRESS, port = settings.FLASK_PORT, ssl_context=('root/certs/cert.pem', 'root/certs/key.pem'))
 
 def new_event(topic_event, topic_response, function):
     mqtt.new_event(topic_event, topic_response, function)

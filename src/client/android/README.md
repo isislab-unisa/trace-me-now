@@ -25,8 +25,41 @@ and add the dependency
 
 ```gradle
 dependencies {
-        implementation 'com.github.spike322:trace-me-now-android-client:0.0.1'
+    ...
+    implementation 'com.github.spike322:trace-me-now-android-client:0.0.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
+```
+
+Finally, add to your `AndroidManifest.xml`
+
+```xml
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/style"
+        android:usesCleartextTraffic="true">
+        <service android:name="org.eclipse.paho.android.service.MqttService">
+        </service>
+        ...
+    <application/>
 ```
 
 Now you're ready to go! 

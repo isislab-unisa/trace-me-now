@@ -1,7 +1,7 @@
 import root.server as server
 
 if __name__ == "__main__":
-    server.start_server()
+    server.start_server_https()
     
     foo = """def new_function(_message):
                 // do some operation

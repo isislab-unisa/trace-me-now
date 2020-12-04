@@ -86,13 +86,55 @@ if __name__ == "__main__":
 
 It imports the framework with the name `server` and you can start your server by calling the `start_server()` method.
 
+If you want to run you server over the https protocol, you can use
+
+```python
+server.start_server_https()
+```
+
+instead of `server.start_server()`. In order to do that, you have to put your certificate and private key, named respectively `cert.pem` and `key.pem`, in `root/certs/`. You can use your own certificate or you can generate a trial one with
+
+```bash
+openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+```
+
 That's it! Your server is running and will handle all the default notifications and provide the APIs for you.
 
 *If you want to know more about default notifications and APIs, please visit the [APIs](#apis) and [Notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev#notification-system) sections.*
 
-Now you can add your custom events and notifications, as many as you want. In order to do that, you can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered. The parameter `_message` which the function takes in input, is the message received on the triggering MQTT topic. So, `_message` will contain the data sent on that topic, and you can use such data for your purposes and for creating your response.
+Now you can add your custom events and notifications, as many as you want. In order to do that, you can define a function to put in a string variable, using the python syntax. This function will define what to do everytime the event is triggered. The parameter `_message`, which the function takes in input, is the message received on the triggering MQTT topic. So, `_message` will contain the data sent on that topic, and you can use such data for your purposes and for creating your response. The return value of your function will be then published on the response MQTT topic.
 
 Then, by calling the `new_event()` method, you will create a new event to be triggered. The first parameter defines the topic where the event is generated, the second parameter defines the topic where a response is provided (such as a notification), and the third one is the function defined before, which defines the actions to take when the event is triggered.
+
+The following could be a more clear example
+
+```python
+import root.server as server
+
+if __name__ == "__main__":
+    server.start_server()
+    
+    foo = """
+def new_function(_message):
+    from flask import Flask
+    from flask import jsonify, request
+    from flask_pymongo import PyMongo
+
+    app = Flask(__name__)
+
+    app.config['MONGO_URI'] = "mongodb://192.168.1.115:27017/newTable"
+    mongo = PyMongo(app)
+
+    mongo.db.newCollection.insert({
+            'newValue': _message
+        })
+    
+    return 'newValue successfully updated with: ' + _message"""
+
+    server.new_event("value/update", "value/update/response", foo)
+```
+
+In this example, the function imports the needed dependencies only for the execution time, so it will be even more optimized with respect of a common function. Here, when a new value comes from the `value/update` topic, it will be saved in a MongoDB table named `newTable`. Once this value is saved, a response is published on the topic `value/update/reponse`.
 
 Now you're ready to go! You can define as many new events as you want with so much simplicity, while still benefitting of the default events provided and managed by the framework itself!
 

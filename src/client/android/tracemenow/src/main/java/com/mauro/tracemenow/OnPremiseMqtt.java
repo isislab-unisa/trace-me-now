@@ -67,6 +67,7 @@ public class OnPremiseMqtt {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.e(LOG_TAG, "Not able to connect to the broker");
+                    Log.e(LOG_TAG, exception.toString());
                 }
             });
         } catch (MqttException ex) {

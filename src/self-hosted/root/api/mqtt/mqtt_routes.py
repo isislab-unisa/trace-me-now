@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
             f_code = compile(event['function'], "<string>", "exec") 
             f_func = FunctionType(f_code.co_consts[0], globals(), "gfg") 
             
-            value = f_func(_message)
+            value = f_func(json.loads(_message))
 
             mqtt_client.publish(event['response'], json.loads(dumps(value)))
 

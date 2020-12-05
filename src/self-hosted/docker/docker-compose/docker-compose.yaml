@@ -25,6 +25,8 @@ services:
   tracemenow-server:
     image: tracemenow-server:latest
     container_name: tracemenow-server
+    ports:
+      - "8888:8888"
     volumes:
     - $HOME/self-hosted/:/home/self-hosted/
     command: python3 /home/self-hosted/main.py

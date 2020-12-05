@@ -32,8 +32,8 @@ def post_function(_json):
 
     foo = """
 def new_event(_message):
-    upper = _message.upper()
+    value = _message['value']
 
-    return upper"""
+    return dumps(value)"""
 
     server.new_event('event/new', 'event/new/response', foo)

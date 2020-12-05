@@ -23,6 +23,8 @@ public class BleSetup {
     private Activity activity;
     private Context context;
 
+    private SharedPreferences sharedPref;
+
     public BleSetup(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
@@ -47,7 +49,7 @@ public class BleSetup {
             }
             uuidUtils = new UuidUtils();
 
-            SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+            sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
             s = sharedPref.getString("uuid", null);
 
             if (s == null) {
@@ -92,5 +94,9 @@ public class BleSetup {
         }
 
         return true;
+    }
+
+    public String getClientId() {
+        return sharedPref.getString("uuid", null);
     }
 }

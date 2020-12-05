@@ -131,10 +131,10 @@ MqttCallbackExtended callback = new MqttCallbackExtended() {
                 if(topic.equals("notify/delete")) {
                     Log.i(LOG_TAG, message.toString());
                 }
-                if(topic.equals("notify/location/"+mqttClient.getClientId())) {
+                if(topic.equals("notify/location/"+bleSetup.getClientId())) {
                     Log.i(LOG_TAG, message.toString());
                 }
-                if(topic.equals("notify/position/"+mqttClient.getClientId())) {
+                if(topic.equals("notify/position/"+bleSetup.getClientId())) {
                     Log.i(LOG_TAG, message.toString());
                 }
                 if(topic.equals("custom/topic")) {

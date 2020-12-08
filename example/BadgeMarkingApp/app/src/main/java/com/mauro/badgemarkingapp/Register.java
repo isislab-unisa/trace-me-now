@@ -101,6 +101,8 @@ public class Register extends Activity {
         protected String doInBackground(Void... voids) {
             OkHttpClient client = new OkHttpClient();
 
+            Log.i("[UUID]", bleSetup.getClientId());
+
             String json = "{\"uuid\":\""+bleSetup.getClientId()+"\",\"name\":\""+name.getText()+"\", \"startShift\": \""+startShift.getText()+"\", \"endShift\": \""+endShift.getText()+"\"}";
 
             RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);

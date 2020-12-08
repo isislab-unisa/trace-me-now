@@ -149,6 +149,8 @@ MqttCallbackExtended callback = new MqttCallbackExtended() {
         };
 ```
 
+*Note that you can always access to your UUID with `bleSetup.getClientId()`, or `mqttClient.getClientId()`, or `awsClient.getClientId()`*.
+
 In the `messageArrived()` method you can check from which topic the message arrives and define a specific behaviour.
 
 Now you can instantiate your mqtt client
@@ -276,6 +278,8 @@ awsClient.connect();
 ```
 
 Now that you are connected, you might want to subscribe to some (or even all) of the [default events](#notification-system) in order to receive notifications, or you might want to get some custom notification.
+
+*Note that you can always access to your UUID with `bleSetup.getClientId()`, or `mqttClient.getClientId()`, or `awsClient.getClientId()`*.
 
 ```java
 awsClient.getNewDeviceNotification(new AWSIotMqttNewMessageCallback() {

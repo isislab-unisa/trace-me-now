@@ -34,7 +34,7 @@ public class OnPremiseMqtt {
         this.serverPort = serverPort;
         this.activity = activity;
         this.context = context;
-        SharedPreferences sharedPref = this.activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.activity.getSharedPreferences("app", Context.MODE_PRIVATE);
         this.clientId = sharedPref.getString("uuid", null);
 
         String uri = "tcp://"+this.serverUri+":"+this.serverPort;

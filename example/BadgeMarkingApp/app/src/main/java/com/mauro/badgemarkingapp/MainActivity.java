@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BleSetup ble;
+    private BleSetup bleSetup;
     private OnPremiseMqtt mqttClient;
 
     private TextView name, startShift, endShift;
@@ -53,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         startShift.setText(sharedPref.getString("startShift", "err"));
         endShift.setText(sharedPref.getString("endShift", "err"));
 
-        ble = new BleSetup(this, this);
-        ble.startTransmitting();
+        bleSetup = new BleSetup(this, this);
+        Log.i("[UUID]", bleSetup.getClientId());
+        bleSetup.startTransmitting();
         active.setChecked(true);
 
         MqttCallbackExtended callback = new MqttCallbackExtended() {
@@ -94,16 +95,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ble.stopTransmitting();
+        bleSetup.stopTransmitting();
     }
 
     public void activate(View v) {
         if(!active.isChecked()) {
             active.setChecked(false);
-            ble.stopTransmitting();
+            bleSetup.stopTransmitting();
         } else {
             active.setChecked(true);
-            ble.startTransmitting();
+            bleSetup.startTransmitting();
         }
     }
 
@@ -117,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i("[EXTERNAL]", jsonObject.getString("uuid"));
-        Log.i("[INTERNAL]", ble.getClientId());
+        Log.i("[INTERNAL]", bleSetup.getClientId());
 
-        if (jsonObject.getString("uuid").equals(ble.getClientId())) {
+        if (jsonObject.getString("uuid").equals(bleSetup.getClientId())) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(jsonObject.getString("msg"));

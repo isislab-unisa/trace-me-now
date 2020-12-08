@@ -20,6 +20,7 @@ public class BleSetup {
     private Beacon iBeacon;
     private int min, maj = -1;
     private UuidUtils uuidUtils;
+    private byte[] uuidBeacon;
     private Activity activity;
     private Context context;
 
@@ -28,6 +29,7 @@ public class BleSetup {
     public BleSetup(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
+        initialize();
     }
 
     public BleSetup(Activity activity, Context context, int min, int maj) {
@@ -35,32 +37,34 @@ public class BleSetup {
         this.context = context;
         this.min = min;
         this.maj = maj;
+        initialize();
+    }
+
+    protected void initialize() {
+        String s;
+
+        if (min == -1 && maj == -1) {
+            Random r = new Random();
+            int min = r.nextInt(65536);
+            int maj = r.nextInt(65536);
+        }
+        uuidUtils = new UuidUtils();
+
+        sharedPref = activity.getSharedPreferences("app", Context.MODE_PRIVATE);
+        s = sharedPref.getString("uuid", null);
+
+        if (s == null) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            s = UUID.randomUUID().toString();
+            editor.putString("uuid", s);
+            editor.apply();
+        }
+
+        uuidBeacon = uuidUtils.asBytes(s);
     }
 
     public boolean startTransmitting() {
         if(checkBluetooth()) {
-            String s;
-            byte[] uuidBeacon;
-
-            if (min == -1 && maj == -1) {
-                Random r = new Random();
-                int min = r.nextInt(65536);
-                int maj = r.nextInt(65536);
-            }
-            uuidUtils = new UuidUtils();
-
-            sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-            s = sharedPref.getString("uuid", null);
-
-            if (s == null) {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                s = UUID.randomUUID().toString();
-                editor.putString("uuid", s);
-                editor.apply();
-            }
-
-            uuidBeacon = uuidUtils.asBytes(s);
-
             Beacons.initialize(context);
 
             iBeacon = new iBeacon(uuidBeacon, maj, min, AdvertiseSettings.ADVERTISE_MODE_BALANCED, AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM, "iBeacon");

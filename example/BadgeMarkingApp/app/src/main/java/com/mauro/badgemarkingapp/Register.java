@@ -19,10 +19,6 @@ import android.widget.TimePicker;
 import androidx.annotation.RequiresApi;
 
 import com.mauro.tracemenow.BleSetup;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -38,7 +34,7 @@ public class Register extends Activity {
     private Button register;
 
     // Server settings
-    private static final String ipAddress = "192.168.1.198";
+    private static final String ipAddress = "192.168.1.115";
     private static final String serverPort = "8888";
 
     protected BleSetup bleSetup;
@@ -101,8 +97,6 @@ public class Register extends Activity {
         protected String doInBackground(Void... voids) {
             OkHttpClient client = new OkHttpClient();
 
-            Log.i("[UUID]", bleSetup.getClientId());
-
             String json = "{\"uuid\":\""+bleSetup.getClientId()+"\",\"name\":\""+name.getText()+"\", \"startShift\": \""+startShift.getText()+"\", \"endShift\": \""+endShift.getText()+"\"}";
 
             RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
@@ -138,11 +132,8 @@ public class Register extends Activity {
 
             SharedPreferences sharedPref = getSharedPreferences("app", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            Log.i("[PUTTING]", String.valueOf(name.getText()));
             editor.putString("name", String.valueOf(name.getText()));
-            Log.i("[PUTTING]", startShift.getText().toString());
             editor.putString("startShift", startShift.getText().toString());
-            Log.i("[PUTTING]", endShift.getText().toString());
             editor.putString("endShift", endShift.getText().toString());
             editor.apply();
 

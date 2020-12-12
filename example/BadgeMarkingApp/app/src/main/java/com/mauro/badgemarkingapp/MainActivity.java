@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch active;
 
     // Server settings
-    private static final String ipAddress = "192.168.1.198";
+    private static final String ipAddress = "192.168.1.115";
     private static final String serverPort = "8888";
     private static final String mosquittoPort = "1883";
 
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         endShift.setText(sharedPref.getString("endShift", "err"));
 
         bleSetup = new BleSetup(this, this);
-        Log.i("[UUID]", bleSetup.getClientId());
         bleSetup.startTransmitting();
         active.setChecked(true);
 
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void connectComplete(boolean reconnect, String serverURI) {
                 if (reconnect) {
                     // re-subscribe to topics
+                    mqttClient.getCustomNotification("employee/ask");
                 } else {
 
                 }
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 if(topic.equals("employee/ask")) {
-                    Log.i("[MQTT]", message.toString());
                     askForReason(message.toString());
                 }
             }
@@ -117,13 +116,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.i("[EXTERNAL]", jsonObject.getString("uuid"));
-        Log.i("[INTERNAL]", bleSetup.getClientId());
+        String recevied = (String) jsonObject.getString("uuid");
+        String internal = (String) bleSetup.getClientId();
 
-        if (jsonObject.getString("uuid").equals(bleSetup.getClientId())) {
+        if (recevied.equals(internal)) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(jsonObject.getString("msg"));
+            builder.setTitle(jsonObject.getString("message"));
 
             final EditText input = new EditText(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -134,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    String json = "{ \"uuid\": \"" + internal + "\", \"reason\": \"" + input.getText() + "\" }";
+                    mqttClient.publishTo("employee/ask/response", json);
                 }
             });
 

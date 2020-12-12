@@ -6,7 +6,6 @@ const awsIot = require('aws-iot-device-sdk');
 var client;
 
 class Mqtt {
-
     constructor() {
         if (process.env.ON_PREMISE === "true") {
             console.log("Connecting to Mosquitto... ");

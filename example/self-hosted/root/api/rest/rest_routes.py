@@ -2,6 +2,7 @@ import root.settings as settings
 import json
 import bson.json_util as json_util
 from flask import Flask
+from flask_cors import CORS
 from flask import jsonify, request
 from flask_pymongo import PyMongo
 from bson.json_util import dumps
@@ -14,6 +15,7 @@ from bson.json_util import loads
 from .. import functions
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"Access-Control-Allow-Origin": "*"}})
 
 app.config['MONGO_URI'] = settings.MONGO_URI
 mongo = PyMongo(app)

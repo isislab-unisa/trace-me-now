@@ -2,10 +2,17 @@ package com.mauro.badgemarkingapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,21 +48,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        createNotificationChannel();
+        SharedPreferences sharedPref = getSharedPreferences("app", Context.MODE_PRIVATE);
+
         name = (TextView)findViewById(R.id.name);
         startShift = (TextView)findViewById(R.id.startShift);
         endShift = (TextView)findViewById(R.id.endShift);
         active = (Switch)findViewById(R.id.active);
-
-        SharedPreferences sharedPref = getSharedPreferences("app", Context.MODE_PRIVATE);
-        // SharedPreferences.Editor editor = sharedPref.edit();
 
         name.setText(sharedPref.getString("name", "err"));
         startShift.setText(sharedPref.getString("startShift", "err"));
         endShift.setText(sharedPref.getString("endShift", "err"));
 
         bleSetup = new BleSetup(this, this);
-        bleSetup.startTransmitting();
         active.setChecked(true);
+        bleSetup.startTransmitting();
 
         MqttCallbackExtended callback = new MqttCallbackExtended() {
             @Override
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 if(topic.equals("employee/ask")) {
+                    Log.i("[ON MQTT MESSAGE]", message.toString());
                     askForReason(message.toString());
                 }
             }
@@ -89,6 +97,17 @@ public class MainActivity extends AppCompatActivity {
         mqttClient = new OnPremiseMqtt(this, this, ipAddress, mosquittoPort, callback);
         mqttClient.connect();
         mqttClient.getCustomNotification("employee/ask");
+
+        if(sharedPref.getString("left", null) != null) {
+            Log.i("[RITARDO]", "Non va bene...");
+            try {
+                askForReason(sharedPref.getString("left", null));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i("[RITARDO]", "Tutto apposto!");
+        }
     }
 
     @Override
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         bleSetup.stopTransmitting();
     }
 
-    public void activate(View v) {
+    public void changeStatus(View v) {
         if(!active.isChecked()) {
             active.setChecked(false);
             bleSetup.stopTransmitting();
@@ -116,13 +135,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String recevied = (String) jsonObject.getString("uuid");
+        String received = (String) jsonObject.getString("uuid");
         String internal = (String) bleSetup.getClientId();
+        String msg = (String) jsonObject.getString("message");
 
-        if (recevied.equals(internal)) {
+        if (received.equals(internal)) {
+            SharedPreferences sharedPref = getSharedPreferences("app", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("left", message);
+            editor.apply();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(jsonObject.getString("message"));
+            builder.setTitle(msg);
 
             final EditText input = new EditText(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -133,12 +157,50 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String json = "{ \"uuid\": \"" + internal + "\", \"reason\": \"" + input.getText() + "\" }";
+                    String json = "{ \"uuid\": \"" + internal + "\", \"name\": \"" + name.getText() + "\", \"message\": \"" + input.getText() + "\" }";
                     mqttClient.publishTo("employee/ask/response", json);
+                    editor.remove("left");
+                    editor.apply();
                 }
             });
 
             builder.show();
+
+            showNotification("Left shift", "Tell us why you're leaving", new Intent(MainActivity.this, MainActivity.class));
         }
     }
+
+    private void showNotification(String title, String content, Intent intent) {
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
+                .setSmallIcon(R.mipmap.icon_badge)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, builder.build());
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "badge-notifications";
+            String description = "badge-notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("0", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }

@@ -82,6 +82,23 @@ def register_employee(_json):
 
     server.new_api(register_employee, 'newEmployee', 'POST')
 
+    get_messages = """
+def get_employees(_json):
+    pymongo = Flask(__name__)
+
+    pymongo.config['MONGO_URI'] = "mongodb://192.168.1.115:27017/employees"
+    mongodb = PyMongo(pymongo)
+    
+    messages = mongodb.db.messages.find()
+
+    res = {"messages": json.loads(dumps(list(messages), indent = 1))}
+    # res.status_code = 200
+
+    return res
+    """
+
+    server.new_api(get_messages, 'getMessages', 'GET')
+
     server.start_server()
 
     employee_arrives = """
@@ -94,13 +111,15 @@ def employee_arrives(_message):
     pymongo.config['MONGO_URI'] = "mongodb://192.168.1.115:27017/employees"
     mongodb = PyMongo(pymongo)
 
-    mongodb.db.employees.update_one({"uuid": device['uuid']}, { "$set": {"arrived": device['lastSeen'], "left": False}})
-    employee = mongodb.db.employees.find_one({"uuid": device['uuid']}, {"uuid": 1, "name": 1, "startShift": 1, "endShift": 1, "arrived": 1, "left": 1})
+    device_uuid = device['uuid']
+    device_uuid.lower()
+    mongodb.db.employees.update_one({"uuid": device_uuid}, { "$set": {"arrived": device['lastSeen'], "left": False}})
+    employee = mongodb.db.employees.find_one({"uuid": device_uuid}, {"uuid": 1, "name": 1, "startShift": 1, "endShift": 1, "arrived": 1, "left": 1})
 
     arrival = device['lastSeen'].split(':')
     startShift = employee['startShift'].split(':')
 
-    if int(arrival[0]) > int(startShift[0]) or int(arrival[1]) > int(startShift[1]):
+    if int(arrival[0]) > int(startShift[0]) or (int(arrival[0]) >= int(startShift[0]) and int(arrival[1]) > int(startShift[1])):
         inLate = True
     else:
         inLate = False
@@ -136,7 +155,10 @@ def employee_leaves(_message):
     startShift = employee['startShift'].split(':')
     endShift = employee['endShift'].split(':')
 
-    if int(departure[0]) < int(endShift[0]) and int(departure[0]) >= int(startShift[0]) and int(departure[1]) >= int(startShift[1]):
+    if int(endShift[0]) < int(startShift[0]):
+        endShift[0] = str(20 + int(endShift[0]))
+
+    if int(departure[0]) < int(endShift[0]) and int(departure[0]) >= int(startShift[0]):
         leftShift = True
     else:
         leftShift = False
@@ -160,7 +182,7 @@ def employee_leaves(_message):
     employee_ask = """
 def employee_ask(_message):
 
-    if _message['leftShift']:
+    if _message['leftShift'] == True:
 
         msg = "Your shift ends at {}. Wanna tell us where are you going at {}?".format(_message['endShift'], _message['outgoingTime'])
 
@@ -173,3 +195,26 @@ def employee_ask(_message):
     """
 
     server.new_event('employee/left', 'employee/ask', employee_ask)
+
+    employee_response = """ 
+def employee_response(_json):
+    from datetime import datetime
+
+    now = datetime.now()
+
+    pymongo = Flask(__name__)
+
+    pymongo.config['MONGO_URI'] = "mongodb://192.168.1.115:27017/employees"
+    mongodb = PyMongo(pymongo)
+
+    mongodb.db.messages.insert({
+            'uuid': _json['uuid'],
+            'name': _json['name'],
+            'message': _json['message'],
+            'date': now.strftime("%d/%m/%Y %H:%M:%S")
+        })
+
+    return 'null'
+    """
+
+    server.new_event('employee/ask/response', 'null', employee_response)

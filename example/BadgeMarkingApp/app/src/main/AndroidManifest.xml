@@ -18,24 +18,27 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icon"
+        android:icon="@mipmap/icon_badge"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon"
+        android:roundIcon="@mipmap/icon_badge_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BadgeMarkingApp"
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".MainActivity2"
             android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.BadgeMarkingApp.NoActionBar" >
+            android:theme="@style/Theme.BadgeMarkingApp.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Register"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SplashScreen"
-            android:label="@string/title_activity_splash_screen" >
+            android:label="@string/title_activity_splash_screen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,7 +48,8 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

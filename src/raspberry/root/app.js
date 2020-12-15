@@ -4,8 +4,8 @@ const fs = require('fs');
 const Noble = require('noble');
 const BeaconScanner = require('node-beacon-scanner');
 const devices = require('./devices.json');
-const backend_https = require('./http_requests/backend_https');
-const backend_mqtt = require('./mqtt_requests/backend_mqtt');
+var backend_https = require('./http_requests/backend_https');
+var backend_mqtt = require('./mqtt_requests/backend_mqtt');
 const uuid4 = require('uuid4');
 const Mqtt = require('./mqtt_requests/backend_mqtt');
 
@@ -52,6 +52,7 @@ class BleScanner {
 		// Sets up the received packets
 		this.#scanner.onadvertisement = (advertisement) => {
 			var beacon = advertisement["iBeacon"];
+			beacon.uuid = beacon.uuid.toLowerCase();
 			const txPower = beacon["txPower"];
 			const rxPower = advertisement["rssi"] - 45;
 			beacon.rxPower = rxPower;

@@ -1,0 +1,69 @@
+{
+  "_args": [
+    [
+      "aws-iot-device-sdk-v2@1.3.2",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "aws-iot-device-sdk-v2@1.3.2",
+  "_id": "aws-iot-device-sdk-v2@1.3.2",
+  "_inBundle": false,
+  "_integrity": "sha512-emWnNTgs69BuiSOl9SjfiBO4juIG7DtvkKh5gw42mHPIOQ19JEU+mb6yhbPtj2EEYs4XZdqoAmwx43LBnMHYlg==",
+  "_location": "/aws-iot-device-sdk-v2",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "aws-iot-device-sdk-v2@1.3.2",
+    "name": "aws-iot-device-sdk-v2",
+    "escapedName": "aws-iot-device-sdk-v2",
+    "rawSpec": "1.3.2",
+    "saveSpec": null,
+    "fetchSpec": "1.3.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/aws-iot-device-sdk-v2/-/aws-iot-device-sdk-v2-1.3.2.tgz",
+  "_spec": "1.3.2",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "bugs": {
+    "url": "https://github.com/aws/aws-iot-device-sdk-js-v2/issues"
+  },
+  "contributors": [
+    {
+      "name": "AWS SDK Common Runtime Team",
+      "email": "aws-sdk-common-runtime@amazon.com"
+    }
+  ],
+  "dependencies": {
+    "aws-crt": "1.3.1"
+  },
+  "description": "NodeJS API for the AWS IoT service",
+  "devDependencies": {
+    "@convergencelabs/typedoc-plugin-custom-modules": "^0.4.0",
+    "@types/node": "^10.17.13",
+    "cmake-js": "^6.1.0",
+    "typedoc": "^0.17.7",
+    "typescript": "^3.9.3"
+  },
+  "homepage": "https://github.com/aws/aws-iot-device-sdk-js-v2",
+  "keywords": [
+    "aws",
+    "iot"
+  ],
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "name": "aws-iot-device-sdk-v2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aws/aws-iot-device-sdk-js-v2.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run tsc",
+    "tsc": "tsc"
+  },
+  "types": "./dist/index.d.ts",
+  "version": "1.3.2"
+}

@@ -1,0 +1,108 @@
+{
+  "_args": [
+    [
+      "aws-crt@1.3.1",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "aws-crt@1.3.1",
+  "_id": "aws-crt@1.3.1",
+  "_inBundle": false,
+  "_integrity": "sha512-D5Lt/qSXtZdOwMNlFLp1AebjBIztYIyh4PtIPoBqEApywyphfopKNUvOIwggrGEJVPl7lwfnejGMvgQ/6Jq1tw==",
+  "_location": "/aws-crt",
+  "_phantomChildren": {
+    "base64-js": "1.3.1",
+    "bl": "4.0.3",
+    "commist": "1.1.0",
+    "concat-stream": "1.6.2",
+    "debug": "4.2.0",
+    "end-of-stream": "1.4.4",
+    "es6-map": "0.1.5",
+    "help-me": "1.1.0",
+    "inherits": "2.0.4",
+    "minimist": "1.2.5",
+    "process-nextick-args": "2.0.1",
+    "pump": "3.0.0",
+    "readable-stream": "2.3.7",
+    "reinterval": "1.1.0",
+    "string_decoder": "1.1.1",
+    "util-deprecate": "1.0.2",
+    "ws": "7.3.1",
+    "xtend": "4.0.2"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "aws-crt@1.3.1",
+    "name": "aws-crt",
+    "escapedName": "aws-crt",
+    "rawSpec": "1.3.1",
+    "saveSpec": null,
+    "fetchSpec": "1.3.1"
+  },
+  "_requiredBy": [
+    "/aws-iot-device-sdk-v2"
+  ],
+  "_resolved": "https://registry.npmjs.org/aws-crt/-/aws-crt-1.3.1.tgz",
+  "_spec": "1.3.1",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "browser": "./dist.browser/browser.js",
+  "bugs": {
+    "url": "https://github.com/awslabs/aws-crt-nodejs/issues"
+  },
+  "contributors": [
+    {
+      "name": "AWS SDK Common Runtime Team",
+      "email": "aws-sdk-common-runtime@amazon.com"
+    }
+  ],
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cmake-js": "^6.1.0",
+    "crypto-js": "^3.3.0",
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "mqtt": "^4.2.1",
+    "websocket-stream": "^5.5.2"
+  },
+  "description": "NodeJS/browser bindings to the aws-c-* libraries",
+  "devDependencies": {
+    "@convergencelabs/typedoc-plugin-custom-modules": "^0.4.0",
+    "@types/crypto-js": "^3.1.43",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^10.17.29",
+    "@types/puppeteer": "^3.0.1",
+    "@types/uuid": "^3.4.8",
+    "@types/ws": "^6.0.4",
+    "aws-sdk": "^2.746.0",
+    "jest": "^25.1.0",
+    "jest-puppeteer": "^4.4.0",
+    "jest-runtime": "^25.2.4",
+    "puppeteer": "^3.3.0",
+    "ts-jest": "^25.3.0",
+    "typedoc": "^0.17.8",
+    "typescript": "^3.9.7",
+    "uuid": "^3.4.0",
+    "yargs": "^13.3.2"
+  },
+  "homepage": "https://github.com/awslabs/aws-crt-nodejs",
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "name": "aws-crt",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awslabs/aws-crt-nodejs.git"
+  },
+  "scripts": {
+    "install": "node ./scripts/install.js",
+    "install:puppeteer": "npm install --save-dev jest-puppeteer puppeteer @types/puppeteer",
+    "prepare": "npm run tsc && node ./scripts/build.js",
+    "test": "npm run test:native",
+    "test:browser": "npx jest -i --verbose --config test/browser/jest.config.js --forceExit",
+    "test:browser:ci": "npm run install:puppeteer && npm run test:browser",
+    "test:native": "npx jest -i --verbose --config test/native/jest.config.js --forceExit",
+    "test:node": "npm run test:native",
+    "tsc": "node ./scripts/tsc.js"
+  },
+  "types": "./dist/index.d.ts",
+  "version": "1.3.1"
+}

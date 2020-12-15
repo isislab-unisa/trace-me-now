@@ -1,0 +1,60 @@
+{
+  "_args": [
+    [
+      "aws-signature-v4@1.2.1",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "aws-signature-v4@1.2.1",
+  "_id": "aws-signature-v4@1.2.1",
+  "_inBundle": false,
+  "_integrity": "sha512-k0tu2qi1sEAjUGqAat75h+u9mRVZvVk7VWZFgmdcw/6eN+NCKOuMsd/ajVhOCje6KjatFDhZh/eRWWwZbizIpw==",
+  "_location": "/aws-signature-v4",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "aws-signature-v4@1.2.1",
+    "name": "aws-signature-v4",
+    "escapedName": "aws-signature-v4",
+    "rawSpec": "1.2.1",
+    "saveSpec": null,
+    "fetchSpec": "1.2.1"
+  },
+  "_requiredBy": [
+    "/aws-mqtt"
+  ],
+  "_resolved": "https://registry.npmjs.org/aws-signature-v4/-/aws-signature-v4-1.2.1.tgz",
+  "_spec": "1.2.1",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Robert Sköld",
+    "email": "robert@department.se"
+  },
+  "bugs": {
+    "url": "https://github.com/department-stockholm/aws-signature-v4/issues"
+  },
+  "description": "Generate AWS V4 Signatures and Signed URLs",
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "homepage": "https://github.com/department-stockholm/aws-signature-v4#readme",
+  "keywords": [
+    "aws",
+    "signature",
+    "signed",
+    "url",
+    "v4"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "aws-signature-v4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/department-stockholm/aws-signature-v4.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "version": "1.2.1"
+}

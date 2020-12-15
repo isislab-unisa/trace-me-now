@@ -1,0 +1,98 @@
+{
+  "_args": [
+    [
+      "cmake-js@6.1.0",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "cmake-js@6.1.0",
+  "_id": "cmake-js@6.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-utmukLQftpgrCpGRCaHnkv4K27HZNNFqmBl4vnvccy0xp4c1erxjFU/Lq4wn5ngAhFZmpwBPQfoKWKThjSBiwg==",
+  "_location": "/cmake-js",
+  "_phantomChildren": {
+    "ansi": "0.3.1",
+    "delegates": "1.0.0",
+    "has-unicode": "2.0.1",
+    "lodash.pad": "4.5.1",
+    "lodash.padend": "4.6.1",
+    "lodash.padstart": "4.6.1",
+    "readable-stream": "2.3.7"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cmake-js@6.1.0",
+    "name": "cmake-js",
+    "escapedName": "cmake-js",
+    "rawSpec": "6.1.0",
+    "saveSpec": null,
+    "fetchSpec": "6.1.0"
+  },
+  "_requiredBy": [
+    "/aws-crt"
+  ],
+  "_resolved": "https://registry.npmjs.org/cmake-js/-/cmake-js-6.1.0.tgz",
+  "_spec": "6.1.0",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Gábor Mező aka unbornchikken"
+  },
+  "bin": {
+    "cmake-js": "bin/cmake-js"
+  },
+  "bugs": {
+    "url": "https://github.com/unbornchikken/cmake-js/issues"
+  },
+  "dependencies": {
+    "debug": "^4",
+    "fs-extra": "^5.0.0",
+    "is-iojs": "^1.0.1",
+    "lodash": "^4",
+    "memory-stream": "0",
+    "npmlog": "^1.2.0",
+    "rc": "^1.2.7",
+    "request": "^2.54.0",
+    "semver": "^5.0.3",
+    "splitargs": "0",
+    "tar": "^4",
+    "unzipper": "^0.8.13",
+    "url-join": "0",
+    "which": "^1.0.9",
+    "yargs": "^3.6.0"
+  },
+  "description": "CMake.js - a Node.js/io.js native addon build tool",
+  "devDependencies": {
+    "mocha": "*",
+    "nan": "^2.1.0",
+    "natives": "^1.1.6"
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "homepage": "https://github.com/unbornchikken/cmake-js#readme",
+  "keywords": [
+    "native",
+    "addon",
+    "module",
+    "c",
+    "c++",
+    "bindings",
+    "build",
+    "cmake",
+    "nw.js",
+    "electron",
+    "boost"
+  ],
+  "license": "MIT",
+  "main": "lib",
+  "name": "cmake-js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unbornchikken/cmake-js.git"
+  },
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "version": "6.1.0"
+}

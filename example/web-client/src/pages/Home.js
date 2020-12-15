@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { ToastProvider, useToasts } from 'react-toast-notifications';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,9 +16,33 @@ const mosquittoPort = '9001'
 
 var mqtt    = require('mqtt');
 var client  = mqtt.connect(`ws://${ipAddress}:${mosquittoPort}`, { clientId: "web-client" });
+var addEmployee
+var deleteEmployee
+var makeToast
 
 client.subscribe('employee/arrived');
 client.subscribe('employee/left');
+client.subscribe('employee/ask/response');
+
+client.on('message', function (topic, message) {
+  const json = JSON.parse(message)
+  if(topic === 'employee/arrived') {
+    if(json['inLate'])
+      makeToast(`${json['name']} arrived in late`, 'warning')
+    else
+      makeToast(`${json['name']} arrived`, 'success')
+    addEmployee(json)
+  } else if(topic === 'employee/left') {
+    makeToast(`${json['name']} went away`, 'info')
+    if (json['leftShift']) {
+      makeToast(`${json['name']} left the shift`, 'error')
+    }
+
+    deleteEmployee(json)
+  } else if(topic === 'employee/ask/response') {
+    makeToast(`${json['name']} says "${json['message'].slice(0, 15)}..."`, 'info')
+  }
+});
 
 const useStyles = makeStyles({
   table: {
@@ -41,19 +66,23 @@ const StyledTableRow = withStyles((theme) => ({
 
 function Home() {
   const classes = useStyles();
+  const { addToast } = useToasts();
 
   const [data, setData] = useState({ employees: [] });
 
-  client.on('message', function (topic, message) {
-    const json = JSON.parse(message)
-    if(topic === 'employee/arrived') {
-      setData({employees: [...data.employees, json]});
-    } else if(topic === 'employee/left') {
-      var temp = [...data.employees];
-      temp.splice(data.employees.indexOf(json), 1);
-      setData({employees: temp})
-    }
-  });
+  addEmployee = (json) => {
+    setData({employees: [...data.employees, json]});
+  }
+
+  deleteEmployee = (json) => {
+    var temp = [...data.employees];
+    temp.splice(data.employees.indexOf(json), 1);
+    setData({employees: temp})
+  }
+
+  makeToast = (message, type) => {
+    addToast(message, { appearance: type })
+  }
  
   useEffect(() => {
     axios(`http://${ipAddress}:${serverPort}/getPresentEmployees`).then(res => setData(res.data));

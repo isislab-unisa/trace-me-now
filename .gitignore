@@ -140,6 +140,8 @@ src/cloud/aws/initialize.backup
 src/cloud/aws/iot-rules/write-rules.sh
 src/cloud/aws/iot-rules/*.json
 
+example/aaaa
+
 requirements.md
 requirements.pdf
 

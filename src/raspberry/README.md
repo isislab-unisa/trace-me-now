@@ -70,9 +70,9 @@ Now you're ready to go!
 
 ## Building
 
-You start building your project at the same level of the `root/` folder. You can start by following the `example.js` file.
+You start building your project at the same level of the `root/` folder. You can start by following the `index.js` file.
 
-If you want to start from scratch, create a new `js` file and import
+It starts by importing
 
 ```javascript
 const BleScanner = require('./root/app');

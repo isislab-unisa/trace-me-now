@@ -120,9 +120,8 @@ class BleScanner {
 		// It scans every minute every device seen so far and deletes the ones who has not been seen for 5 minutes or more
 		setInterval(() => {
 			devices.forEach(device => {
-				console.log(`Scanned: ${device.uuid}`);
 				var lastSeen = device.lastSeen.split(':');
-				if(parseInt(lastSeen[0]) < new Date().getHours() || ((parseInt(lastSeen[0]) === new Date().getHours()) && (parseInt(lastSeen[1]) <= new Date().getMinutes()))) {
+				if(parseInt(lastSeen[0]) < new Date().getHours() || ((parseInt(lastSeen[0]) === new Date().getHours()) && (parseInt(lastSeen[1])+5 <= new Date().getMinutes()))) {
 					// Deletes from position of the device to one position forward, aka the single device
 					devices.splice(devices.indexOf(device), 1);
 					backend_mqtt.deleteDevice({ device: device });

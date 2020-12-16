@@ -39,6 +39,7 @@ function Navbar() {
                 </li>
               );
             })}
+            <h5><a href="#">Powered by Trace Me Now</a></h5>
           </ul>
         </nav>
       </IconContext.Provider>

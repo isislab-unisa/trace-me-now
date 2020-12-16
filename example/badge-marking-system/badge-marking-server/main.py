@@ -33,7 +33,7 @@ def get_present_employees(_json):
         arrival = emp['arrived'].split(':')
         startShift = emp['startShift'].split(':')
 
-        if int(arrival[0]) > int(startShift[0]) or int(arrival[1]) > int(startShift[1]):
+        if int(arrival[0]) > int(startShift[0]) or (int(arrival[0]) >= int(startShift[0]) and int(arrival[1]) > int(startShift[1])+5):
             inLate = True
         else:
             inLate = False
@@ -119,7 +119,7 @@ def employee_arrives(_message):
     arrival = device['lastSeen'].split(':')
     startShift = employee['startShift'].split(':')
 
-    if int(arrival[0]) > int(startShift[0]) or (int(arrival[0]) >= int(startShift[0]) and int(arrival[1]) > int(startShift[1])):
+    if int(arrival[0]) > int(startShift[0]) or (int(arrival[0]) >= int(startShift[0]) and int(arrival[1]) > int(startShift[1])+5):
         inLate = True
     else:
         inLate = False

@@ -27,15 +27,17 @@ client.subscribe('employee/ask/response');
 client.on('message', function (topic, message) {
   const json = JSON.parse(message)
   if(topic === 'employee/arrived') {
-    if(json['inLate'])
+    if(json['inLate']) {
       makeToast(`${json['name']} arrived in late`, 'warning')
-    else
+    } else {
       makeToast(`${json['name']} arrived`, 'success')
+    }
     addEmployee(json)
   } else if(topic === 'employee/left') {
-    makeToast(`${json['name']} went away`, 'info')
     if (json['leftShift']) {
       makeToast(`${json['name']} left the shift`, 'error')
+    } else {
+      makeToast(`${json['name']} went away`, 'info')
     }
 
     deleteEmployee(json)

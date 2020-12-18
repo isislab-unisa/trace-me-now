@@ -101,7 +101,7 @@ foo = (someData) => {
 
 By doing so, you define a new function with your desired behaviour, and when you're ready, you can publish the result with the `newEvent()` function on the specified MQTT topic.
 
-*If you want to know more about the notification system, please take a look to [Notification System](https://github.com/isislab-unisa/trace-me-now/tree/dev#notification-system).*
+*If you want to know more about the notification system, please take a look to the [Self-hosted notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev/src/self-hosted#notification-system) or the [AWS notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev/src/cloud/aws#notification-system).*
 
 This event will be triggered by your back-end, either serverless or serveful, in which you can define your custom events.
 

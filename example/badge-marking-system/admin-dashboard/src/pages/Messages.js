@@ -8,10 +8,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import env from "react-dotenv";
 
-const ipAddress = '192.168.1.115'
-const serverPort = '8888'
-const mosquittoPort = '1883'
+const ipAddress = env.SERVER_IP;
+const serverPort = env.SERVER_PORT;
+const mosquittoPort = env.BROKER_PORT;
 
 const useStyles = makeStyles({
   table: {

@@ -1,14 +1,65 @@
-# Getting Started with Create React App
+# Admin dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a web client for the admin side, built from scratch using React. 
 
-## Available Scripts
+From this dashboard, an admin of the company can monitor the employees. It is provided a notification system that notifies when an employee arrives, when arrives in late, when leaves the company during or out the shift, and reasons reported by the employees when they are leaving the shift.
 
-In the project directory, you can run:
+Through this platform, so, an admin can see a list of all the employees, a list of on-site employees, and a list of the aforementioned messages.
+
+## Overview
+
+### On-site view
+
+![On-site view](src/assets/screenshots/rounded-admin-1.png)
+
+This view allows the admin to see all the employees that are currently on site.
+
+### On-site: new employee
+
+![On-site: new employee](src/assets/screenshots/rounded-admin-2.png)
+
+As soon as an employee arrives the admin recevices a notification through the dashboard, and from the dashboard itself, the admin can check if the employee arrived in time or in late, based on his/her shift.
+
+### On-site: employee leaves the shift
+
+![On-site: employee leaves the shift](src/assets/screenshots/rounded-admin-3.png)
+
+If an employee leaves the building during his/her shift, the admin will be promptly notified.
+
+### On-site: employee leaves the shift
+
+![On-site: employee leaves the shift](src/assets/screenshots/rounded-admin-4.png)
+
+The employee is required to give a reason about why he/she is leaving, and the admin will receive such notification.
+
+### Employees view
+
+![Employees view](src/assets/screenshots/rounded-admin-5.png)
+
+Here the admin che see a list of all employees of the company, and check whether they are at work or not.
+
+### Messages view
+
+![Messages view](src/assets/screenshots/rounded-admin-6.png)
+
+Here the admin can check all the reports from the employees about why they left their shift, with the corrisponding date and time.
+
+## Run and test
+
+Before starting the project, create a `.env` file in the root fo the project having this form
+
+```
+SERVER_IP=<your_server_ip>
+SERVER_PORT=<your_server_port>
+BROKER_IP=<your_broker_ip>
+BROKER_PORT=<your_broker_port>
+```
+
+Then, in the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+It runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
@@ -39,32 +90,3 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

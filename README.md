@@ -20,11 +20,13 @@ All of these events and APIs are provided by default and you will not have to ma
 
 You can take advantage of all this self-handled process and define your own custom events or APIs. For instance, you can make your Raspberry Pi generate a new event, when something happens, to be triggered by your back-end, and generate a custom notification based on it. This notification can be then consumed by your smartphone or your custom end client.
 
-![General Serverless Architecture](docs/img/architecture.png "General Serverless Architecture")  
-*General Serverless Architecture*
+### General Serverless Architecture
 
-![General Server Architecture](docs/img/architecture-server.png "General Server Architecture")  
-*General Server Architecture*
+![General Serverless Architecture](docs/img/architecture.png "General Serverless Architecture")  
+
+### General On-premise Server Architecture
+
+![General On-premise Server Architecture](docs/img/architecture-server.png "General Server Architecture")  
 
 The above are two generalized architecture that you can build using this framework. If you choose to build a serverless architecture, then you can take advantage of the *Amazon Web Services*, and the framework will help you in building new functions, setup a database, deploy new triggers and APIs.  
 If you want an on-premise solution, instead, the framework provides you with a Python module which allows you to easily setup your server, add new events and APIs to the default provided ones, and each component of your server — *i.e.* a NoSQL DB, an MQTT broker, and a Python server — will run in an isolated *Docker Container*, so that you will not have to install dependencies and setup anything on your machine, but everything is ready to be used.

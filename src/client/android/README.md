@@ -261,7 +261,7 @@ The `AwsMqtt` allows you to receive notifications from the system, when using a 
 
 **NOTE: if you use AWSMqtt, you won't use OnPremiseMqtt and vice versa.**
 
-*If you want to know more about the notification system, please take a look to [Notification System](#notification-system).*
+*If you want to know more about the notification system, please take a look to the [Self-hosted notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev/src/self-hosted#notification-system) or the [AWS notification system](https://github.com/isislab-unisa/trace-me-now/tree/dev/src/cloud/aws#notification-system).*
 
 First thing you have to do is to instantiate an object of the `AwsMqtt` class
 

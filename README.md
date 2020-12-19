@@ -28,7 +28,7 @@ You can take advantage of all this self-handled process and define your own cust
 
 ![General On-premise Server Architecture](docs/img/architecture-server.png "General Server Architecture")  
 
-The above are two generalized architecture that you can build using this framework. If you choose to build a serverless architecture, then you can take advantage of the *Amazon Web Services*, and the framework will help you in building new functions, setup a database, deploy new triggers and APIs.  
+The above are two generalized architectures that you can build using this framework. If you choose to build a serverless architecture, then you can take advantage of the *Amazon Web Services*, and the framework will help you in building new functions, setup a database, deploy new triggers and APIs.  
 If you want an on-premise solution, instead, the framework provides you with a Python module which allows you to easily setup your server, add new events and APIs to the default provided ones, and each component of your server — *i.e.* a NoSQL DB, an MQTT broker, and a Python server — will run in an isolated *Docker Container*, so that you will not have to install dependencies and setup anything on your machine, but everything is ready to be used.
 
 ## Possible use cases

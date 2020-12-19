@@ -26,7 +26,7 @@ and add the dependency
 ```gradle
 dependencies {
     ...
-    implementation 'com.github.spike322:trace-me-now-android-client:0.0.3'
+    implementation 'com.github.spike322:trace-me-now-android-client:0.0.5'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }

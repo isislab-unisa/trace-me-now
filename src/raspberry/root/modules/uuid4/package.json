@@ -1,0 +1,58 @@
+{
+  "_args": [
+    [
+      "uuid4@2.0.2",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "uuid4@2.0.2",
+  "_id": "uuid4@2.0.2",
+  "_inBundle": false,
+  "_integrity": "sha512-TzsQS8sN1B2m9WojyNp0X/3JL8J2RScnrAJnooNPL6lq3lA02/XdoWysyUgI6rAif0DzkkWk51N6OggujPy2RA==",
+  "_location": "/uuid4",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "uuid4@2.0.2",
+    "name": "uuid4",
+    "escapedName": "uuid4",
+    "rawSpec": "2.0.2",
+    "saveSpec": null,
+    "fetchSpec": "2.0.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/uuid4/-/uuid4-2.0.2.tgz",
+  "_spec": "2.0.2",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Michael J. Ryan",
+    "email": "tracker1@gmail.com"
+  },
+  "browser": {
+    "./index.js": "browser.js",
+    "./index.mjs": "browser.mjs"
+  },
+  "bugs": {
+    "url": "https://github.com/tracker1/node-uuid4/issues"
+  },
+  "description": "Node UUID v4 Generator",
+  "homepage": "https://github.com/tracker1/node-uuid4",
+  "keywords": [
+    "node",
+    "uuid-v4",
+    "uuid",
+    "guid"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "module": "index.mjs",
+  "name": "uuid4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tracker1/node-uuid4.git"
+  },
+  "version": "2.0.2"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Trace Me Now is an open-source framework which helps developers in building their own IoT-based indoor localization and tracking systems. Its aim is to let developers easily develop systems that need to localise, trace, and keep track of people in an indoor environment.",
+  "main": "index.html",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

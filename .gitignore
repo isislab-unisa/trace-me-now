@@ -131,6 +131,19 @@ dmypy.json
 src/self-hosted/docker/docker-compose/mongo-volume/
 src/self-hosted/docker/dockerimage/Dockerfile.backup
 src/self-hosted/docker/dockerimage/script.sh
+src/self-hosted/root/certs/
+
+src/cloud/aws/export.sh
+src/cloud/aws/apis.txt
+src/cloud/aws/prova.sh
+src/cloud/aws/initialize.backup
+src/cloud/aws/iot-rules/write-rules.sh
+src/cloud/aws/iot-rules/*.json
+
+example/aaaa
+
+requirements.md
+requirements.pdf
 
 # NodeJS
 node_modules/

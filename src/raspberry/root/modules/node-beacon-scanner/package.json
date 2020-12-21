@@ -1,0 +1,71 @@
+{
+  "_args": [
+    [
+      "node-beacon-scanner@0.2.2",
+      "/home/mauro-raspberry/ble-scanner"
+    ]
+  ],
+  "_from": "node-beacon-scanner@0.2.2",
+  "_id": "node-beacon-scanner@0.2.2",
+  "_inBundle": false,
+  "_integrity": "sha512-zWOeYWGzUuZX0zWquxh1XOtJ+RgeM1PTg/RkBk8v5qqhmWlkHQjLD+0yXmuEMq5rRE6mcGiZV0K/csHCGTGt4A==",
+  "_location": "/node-beacon-scanner",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "node-beacon-scanner@0.2.2",
+    "name": "node-beacon-scanner",
+    "escapedName": "node-beacon-scanner",
+    "rawSpec": "0.2.2",
+    "saveSpec": null,
+    "fetchSpec": "0.2.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-beacon-scanner/-/node-beacon-scanner-0.2.2.tgz",
+  "_spec": "0.2.2",
+  "_where": "/home/mauro-raspberry/ble-scanner",
+  "author": {
+    "name": "Futomi Hatano",
+    "email": "futomi.hatano@gmail.com",
+    "url": "https://github.com/futomi"
+  },
+  "bugs": {
+    "url": "https://github.com/futomi/node-beacon-scanner/issues"
+  },
+  "dependencies": {
+    "@abandonware/noble": ">=1.9.2-5"
+  },
+  "description": "The node-beacon-scanner is a Node.js module which allows you to scan BLE beacon packets and parse the packet data. This module supports iBeacon, Eddystone, and Estimote.",
+  "directories": {
+    "lib": "./lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "homepage": "https://github.com/futomi",
+  "keywords": [
+    "Eddystone",
+    "iBeacon",
+    "Estimote",
+    "BLE",
+    "Bluetooth Low Energy",
+    "Bluetooth smart",
+    "Bluetooth",
+    "IoT",
+    "Internet of Things"
+  ],
+  "license": "MIT",
+  "main": "./lib/scanner.js",
+  "name": "node-beacon-scanner",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/futomi/node-beacon-scanner.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.2.2"
+}

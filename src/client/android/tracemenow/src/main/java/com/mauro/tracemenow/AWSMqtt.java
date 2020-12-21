@@ -51,7 +51,7 @@ public class AWSMqtt {
         this.customerEndpoint = customerEndpoint;
         this.cognitoPoolId = cognitoPoolId;
 
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences("app", Context.MODE_PRIVATE);
         clientId = sharedPref.getString("uuid", null);
 
         credentialsProvider = new CognitoCachingCredentialsProvider(

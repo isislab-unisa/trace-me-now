@@ -285,6 +285,9 @@ public class MainActivity extends AppCompatActivity {
         // By calling this method, you will unsubscribe from the topic specified as a parameter.
         awsClient.removeCustomNotification("custom/topic");
 
+        // With this method you can publish the message 'message' onto the topic 'custom/topic'.
+        awsClient.publishTo("custom/topic", "message");
+
         /* Here starts the on premise MQTT configuration and connection, as well as topics subscriptions.
          * You can define the behaviour for each topic message reception.
          * You can even subscribe to a custom topic.
@@ -319,10 +322,10 @@ public class MainActivity extends AppCompatActivity {
                 if(topic.equals("notify/delete")) {
                     Log.i(LOG_TAG, message.toString());
                 }
-                if(topic.equals("notify/location/"+mqttClient.getClientId())) {
+                if(topic.equals("notify/location/"+ble.getClientId())) {
                     Log.i(LOG_TAG, message.toString());
                 }
-                if(topic.equals("notify/position/"+mqttClient.getClientId())) {
+                if(topic.equals("notify/position/"+ble.getClientId())) {
                     Log.i(LOG_TAG, message.toString());
                 }
                 if(topic.equals("custom/topic")) {
@@ -389,6 +392,9 @@ public class MainActivity extends AppCompatActivity {
 
         // By calling this method, you will unsubscribe from the topic specified as a parameter.
         mqttClient.removeCustomNotification("custom/topic");
+
+        // With this method you can publish the message 'message' onto the topic 'custom/topic'.
+        mqttClient.publishTo("custom/topic", "message");
 
         /* Here is an example of how to use provided APIs using OkHttpClient library.
          * This is just an example, it does not belong to the framework, sinc it is just a Rest API call.

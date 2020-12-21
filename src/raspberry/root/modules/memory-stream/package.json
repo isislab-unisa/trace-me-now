@@ -1,0 +1,60 @@
+{
+  "_args": [
+    [
+      "memory-stream@0.0.3",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "memory-stream@0.0.3",
+  "_id": "memory-stream@0.0.3",
+  "_inBundle": false,
+  "_integrity": "sha1-6+jdHDuLw4wOeUHp3dWuvmtN6D8=",
+  "_location": "/memory-stream",
+  "_phantomChildren": {
+    "core-util-is": "1.0.2",
+    "inherits": "2.0.4"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "memory-stream@0.0.3",
+    "name": "memory-stream",
+    "escapedName": "memory-stream",
+    "rawSpec": "0.0.3",
+    "saveSpec": null,
+    "fetchSpec": "0.0.3"
+  },
+  "_requiredBy": [
+    "/cmake-js"
+  ],
+  "_resolved": "https://registry.npmjs.org/memory-stream/-/memory-stream-0.0.3.tgz",
+  "_spec": "0.0.3",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Tommy Messbauer"
+  },
+  "bugs": {
+    "url": "https://github.com/tommymessbauer/memory-stream/issues"
+  },
+  "dependencies": {
+    "readable-stream": "~1.0.26-2"
+  },
+  "description": "Node.js streams implementation for buffered memory writes",
+  "homepage": "https://github.com/tommymessbauer/memory-stream",
+  "keywords": [
+    "streams",
+    "memory",
+    "buffer"
+  ],
+  "license": "MMIT",
+  "main": "index.js",
+  "name": "memory-stream",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tommymessbauer/memory-stream.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec -u tdd test/tests/*.js"
+  },
+  "version": "0.0.3"
+}

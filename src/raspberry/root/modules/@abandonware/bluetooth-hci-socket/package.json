@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      "@abandonware/bluetooth-hci-socket@0.5.3-6",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "@abandonware/bluetooth-hci-socket@0.5.3-6",
+  "_id": "@abandonware/bluetooth-hci-socket@0.5.3-6",
+  "_inBundle": false,
+  "_integrity": "sha512-LwZtu31vgcm6T4GRtHDCye1JZepvjfqW418DYccgcu4podXbBoogkt4NhRP6rnoOxY+49F1Do7oK5K8fModxuw==",
+  "_location": "/@abandonware/bluetooth-hci-socket",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@abandonware/bluetooth-hci-socket@0.5.3-6",
+    "name": "@abandonware/bluetooth-hci-socket",
+    "escapedName": "@abandonware%2fbluetooth-hci-socket",
+    "scope": "@abandonware",
+    "rawSpec": "0.5.3-6",
+    "saveSpec": null,
+    "fetchSpec": "0.5.3-6"
+  },
+  "_requiredBy": [
+    "/",
+    "/@abandonware/noble"
+  ],
+  "_resolved": "https://registry.npmjs.org/@abandonware/bluetooth-hci-socket/-/bluetooth-hci-socket-0.5.3-6.tgz",
+  "_spec": "0.5.3-6",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Sandeep Mistry",
+    "email": "sandeep.mistry@gmail.com"
+  },
+  "binary": {
+    "module_name": "bluetooth_hci_socket",
+    "module_path": "./lib/binding/",
+    "host": "https://github.com/abandonware/node-bluetooth-hci-socket/releases/download/",
+    "package_name": "{module_name}-{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "remote_path": "{version}"
+  },
+  "bugs": {
+    "url": "https://github.com/abandonware/node-bluetooth-hci-socket/issues"
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "nan": "^2.14.1",
+    "node-pre-gyp": "^0.15.0",
+    "usb": "^1.6.3"
+  },
+  "description": "Bluetooth HCI socket binding for Node.js",
+  "devDependencies": {
+    "jshint": "^2.12.0"
+  },
+  "homepage": "https://github.com/abandonware/node-bluetooth-hci-socket",
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "keywords": [
+    "HCI",
+    "Bluetooth",
+    "Linux",
+    "Windows"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@abandonware/bluetooth-hci-socket",
+  "optionalDependencies": {
+    "usb": "^1.6.3"
+  },
+  "os": [
+    "linux",
+    "android",
+    "freebsd",
+    "win32"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abandonware/node-bluetooth-hci-socket.git"
+  },
+  "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build",
+    "test": "jshint lib/*.js && node test.js"
+  },
+  "version": "0.5.3-6"
+}

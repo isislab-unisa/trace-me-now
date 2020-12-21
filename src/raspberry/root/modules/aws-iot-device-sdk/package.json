@@ -1,0 +1,96 @@
+{
+  "_args": [
+    [
+      "aws-iot-device-sdk@2.2.6",
+      "/home/mauro-raspberry/trace-me-now/ble-scanner"
+    ]
+  ],
+  "_from": "aws-iot-device-sdk@2.2.6",
+  "_id": "aws-iot-device-sdk@2.2.6",
+  "_inBundle": false,
+  "_integrity": "sha512-W481pAghXqF2PDrsFwQ6o0ngQfp0TOq78z8JuEHSrI2jhOynvsQzT2uTSl3lc2/rB8nLxJh6Ev7L/Xs+QD8NFQ==",
+  "_location": "/aws-iot-device-sdk",
+  "_phantomChildren": {
+    "commist": "1.1.0",
+    "concat-stream": "1.6.2",
+    "end-of-stream": "1.4.4",
+    "es6-map": "0.1.5",
+    "help-me": "1.1.0",
+    "inherits": "2.0.4",
+    "minimist": "1.2.5",
+    "mqtt-packet": "5.6.1",
+    "pump": "3.0.0",
+    "readable-stream": "2.3.7",
+    "reinterval": "1.1.0",
+    "split2": "2.2.0",
+    "websocket-stream": "5.5.2",
+    "xtend": "4.0.2"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "aws-iot-device-sdk@2.2.6",
+    "name": "aws-iot-device-sdk",
+    "escapedName": "aws-iot-device-sdk",
+    "rawSpec": "2.2.6",
+    "saveSpec": null,
+    "fetchSpec": "2.2.6"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/aws-iot-device-sdk/-/aws-iot-device-sdk-2.2.6.tgz",
+  "_spec": "2.2.6",
+  "_where": "/home/mauro-raspberry/trace-me-now/ble-scanner",
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "http://aws.amazon.com"
+  },
+  "bugs": {
+    "url": "http://github.com/aws/aws-iot-device-sdk-js/issues"
+  },
+  "dependencies": {
+    "crypto-js": "3.1.6",
+    "minimist": "1.2.5",
+    "mqtt": "2.18.8",
+    "websocket-stream": "^5.0.1"
+  },
+  "description": "AWS IoT Node.js SDK for Embedded Devices",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-beautify": "^2.0.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-coverage": "^0.3.38",
+    "gulp-jscs": "^4.0.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^3.0.1",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.2.1",
+    "rewire": "^2.5.1",
+    "sinon": "^1.17.3"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/aws/aws-iot-device-sdk-js",
+  "keywords": [
+    "api",
+    "amazon",
+    "aws",
+    "iot",
+    "mqtt"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "aws-iot-device-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aws/aws-iot-device-sdk-js.git"
+  },
+  "scripts": {
+    "beautify": "node ./node_modules/gulp/bin/gulp.js beautify",
+    "browserize": "./scripts/browserize.sh",
+    "test": "node ./node_modules/gulp/bin/gulp.js test --verbose"
+  },
+  "version": "2.2.6"
+}

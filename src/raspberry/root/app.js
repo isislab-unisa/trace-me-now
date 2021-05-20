@@ -4,7 +4,6 @@ const fs = require('fs');
 const Noble = require('noble');
 const BeaconScanner = require('node-beacon-scanner');
 const devices = require('./devices.json');
-var backend_https = require('./http_requests/backend_https');
 var backend_mqtt = require('./mqtt_requests/backend_mqtt');
 const uuid4 = require('uuid4');
 const Mqtt = require('./mqtt_requests/backend_mqtt');
@@ -23,8 +22,8 @@ class BleScanner {
 		roomNumber = process.env.ROOM_NUMBER;
 
 		if(roomNumber === undefined || roomNumber === '') {
-			console.log('Please, set the ROOM_NUMBER value within the .env file in the root of the project');
-			console.log(' - For more information, please visit https://github.com/spike322/trace-me-now \n');
+			console.log('Please, set the ROOM_NUMBER value in the .env file in the root of the project');
+			console.log(' - For more information, please visit https://github.com/isislab=-unisa/trace-me-now \n');
 			process.exit();
 		}
 
@@ -49,7 +48,7 @@ class BleScanner {
 	}
 
 	startScanning() {
-		// Sets up the received packets
+		// Set up the received packets
 		this.#scanner.onadvertisement = (advertisement) => {
 			var beacon = advertisement["iBeacon"];
 			beacon.uuid = beacon.uuid.toLowerCase();
@@ -65,7 +64,7 @@ class BleScanner {
 			this.#checkDevice(beacon.uuid, distance);
 		}
 
-		// Starts listening for BLE broadcast packets
+		// Start listening for BLE broadcast packets
 		this.#scanner.startScan().then(() => {
 			console.log("Scanning has started...");
 		}).catch(error => {
@@ -79,7 +78,7 @@ class BleScanner {
 		backend_mqtt.newEvent(topic, data);
 	}
 
-	// It checks if the received packet belongs to a device already seen or a new one
+	// Checks if the received packet belongs to a device already seen or a new one
 	#checkDevice = function(uuid, distance) {
 		if(devices.some(device => device.uuid === uuid)) {
 			this.#updateDevices(uuid, distance);	
@@ -88,7 +87,7 @@ class BleScanner {
 		}
 	}
 
-	// Adds a new device to the list
+	// Add a new device to the list
 	#addDevice = function(uuid, distance) {
 		const deviceUuid = uuid;
 		const deviceLastSeen = new Date().getHours() + ':' + new Date().getMinutes();
@@ -101,7 +100,7 @@ class BleScanner {
 	}
 
 
-	// Updates the last seen time of an already existing device
+	// Updates the last seen time of an existing device
 	#updateDevices = function(uuid, distance) {
 		devices.forEach(device => {
 			if(uuid === device.uuid) {
@@ -117,12 +116,11 @@ class BleScanner {
 	}
 
 	#deleteDevices = function() {
-		// It scans every minute every device seen so far and deletes the ones who has not been seen for 5 minutes or more
+		// Every minute scan every device seen so far and deletes the devices not seen for 5 minutes or more
 		setInterval(() => {
 			devices.forEach(device => {
 				var lastSeen = device.lastSeen.split(':');
 				if(parseInt(lastSeen[0]) < new Date().getHours() || ((parseInt(lastSeen[0]) === new Date().getHours()) && (parseInt(lastSeen[1])+5 <= new Date().getMinutes()))) {
-					// Deletes from position of the device to one position forward, aka the single device
 					devices.splice(devices.indexOf(device), 1);
 					backend_mqtt.deleteDevice({ device: device });
 					this.#writeToFile();
@@ -131,7 +129,7 @@ class BleScanner {
 		}, 60000);
 	}
 
-	// Writes changes to file
+	// Write changes to the JSON file
 	#writeToFile = function() {
 		let data = JSON.stringify(devices, null, 2);
 		fs.writeFile('./devices.json', data, (err) => {

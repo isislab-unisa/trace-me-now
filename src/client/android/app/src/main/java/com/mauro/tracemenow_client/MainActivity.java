@@ -69,20 +69,20 @@ public class MainActivity extends AppCompatActivity {
         BleSetup bleSetup = new BleSetup(this, this, 0, 0);
         // Start transmission
         ble.startTransmitting();
-        //Stop transmission
+        // Stop transmission
         ble.stopTransmitting();
 
-        /* Here starts the IoT core configuration and connection, as well as topics subscriptions.
-         * You can define the behaviour for each topic message reception.
-         * You can even subscribe to a custom topic.
-         * NOTE: if you use AWSMqtt, you won't use OnPremiseMqtt and vice versa.
+        /* IoT core configuration: connection and topics subscriptions
+         * Comprehend methods to define the behaviour for each topic message reception
+         * and to subscribe to custom topics
+         * NOTE: only one MQTT broker must be used, choose between AWSMqtt or OnPremiseMqtt
          */
 
-        awsClient = new AWSMqtt(this, this, "a26sbz9d6nds4r-ats.iot.us-east-1.amazonaws.com", "us-east-1:fb46622a-bcf0-4b7b-92f9-3161f47af674");
+        awsClient = new AWSMqtt(this, this, "dummyLink.iot.awsRegion.amazonaws.com", "awsRegion:xxxx-xxxx-xxxx-xxxx-xxxx");
         awsClient.connect();
 
-        /* By calling this method, you will subscribe to the 'notify/new' topic and you will receive a message every time a new device comes in
-         * You can specify the behaviour when this message comes in in the run() method, which will run in a separate thread.
+        /* Subscription to the 'notify/new' topic to receive a message every time a new device is detected
+         * run method allows to specify the behavior when a message comes on the 'notify/new' topic
          */
         awsClient.getNewDeviceNotification(new AWSIotMqttNewMessageCallback() {
             @Override
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /* By calling this method, you will subscribe to the 'notify/delete' topic and you will receive a message every time a device leaves the system
-         * You can specify the behaviour when this message comes in in the run() method, which will run in a separate thread.
+        /* Subscription to the 'notify/delete' topic to receive a message every time a device leaves the system
+         * run method allows to specify the behavior when a message comes on the 'notify/delete' topic
          */
         awsClient.getDeleteDeviceNotification(new AWSIotMqttNewMessageCallback() {
             @Override

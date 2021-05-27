@@ -1,0 +1,11 @@
+flask
+flask-cors
+flask-sqlalchemy
+flask-restplus
+Werkzeug==0.16.1
+jsonpickle
+Flask-PyMongo
+paho-mqtt
+Flask-Jsonpify
+pymongo
+flask_pymongo

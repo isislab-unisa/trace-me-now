@@ -1,0 +1,3 @@
+include ':tracemenow'
+include ':app'
+rootProject.name = "tracemenow_client"

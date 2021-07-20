@@ -1,9 +1,7 @@
 # Amazon Web Services
-Scenarios with many devices involved can exploit cloud computing to gain scalability and performance and many other advantages. In detail, TraceMeNow exploits the AWS services handling all the processes regarding the cloud services automatically, from their creation to the integration within the IPS, abstracting the developer from the interaction with the cloud provider.
-
 The AWS architecture employs the Amazon Web Services environment. 
 
-The server engine is realized using AWS Lambda functions, the serverless service of AWS. TraceMeNow uses Lambda functions to perform the actions in response to the events and manage interaction with the other components.
+The server engine is realized using AWS Lambda functions to perform the actions in response to the events and manage interaction with the other components.
 The Event/Notification system is based on AWS IoT Core acting as the MQTT broker.
 The database is implemented through Amazon DynamoDB.
 The interaction with the application module relies on Amazon API Gateway. The APIs represent the trigger of the Lambda functions, working as entry points. For instance, any database operation is performed using the endpoint provided by API Gateway.
@@ -219,7 +217,7 @@ A successful request will returns status code `200`, `404` otherwise.
 
 The Event/Notification system realizes the communication protocol of TraceMeNow exploiting the MQTT protocol.
 The system includes two MQTT topics for each event, with some exceptions that use only one topic. The first one is the event topic, where the tracking node publishes the message indicating the detection of an event. The second one is the notification topic, where the function triggered by the event sends the processed data in the form of notification and where the components interested in a particular event will subscribe.
-When a change in the system occurs, a message with attached information is sent on the event topic, triggering a function. This function performs some action and then publishes a response on the notification topic. The use of two or more topics for each event type improves the management of the communication granting more control to the developer. For instance, the interested device can subscribe only to the notification topic where the function will publish the elaborated data.
+
 The default topics are detailed below:
 
 | Event           	| Notification         	|

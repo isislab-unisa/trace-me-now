@@ -1,11 +1,8 @@
 # Self Hosted Server
 
-The on-premise architecture is suited for small systems with few devices involved and grants low cost if not null. The low requirements of the application module enable the use of a regular computer for the execution. This library handles all the needed tasks automatically, from the connection with the database to the communication with other components. However, the developer can customize each process and implement additional functionalities, such as custom events and functions.
-
-The on-premise architecture implements the server using a series of Docker containers making the installation as quick and simple as possible. In detail, a Docker Compose file includes all the dependencies and the services needed.
-The server engine is realized through several Python modules while the Event/Notifications system is based on Eclipse Mosquitto.
+The on-premise architecture implements the server using a Docker Compose file including all the dependencies and the services needed.
+The server engine is based on Python while the Event/Notifications system is based on Eclipse Mosquitto.
 The database exploits a NoSQL MongoDB database.
-Finally, the security of the architecture relies on the Transport Layer Security protocol.
 
 # Table of Contents
 - [Requirements](#requirements)
@@ -274,9 +271,9 @@ A successful request will returns status code `200`, `404` otherwise.
 
 ## Notification System
 
-The Event/Notification system realizes the communication protocol of TraceMeNow exploiting the MQTT protocol.
+The Event/Notification is the communication protocol of TraceMeNow exploiting the MQTT protocol.
 The system includes two MQTT topics for each event, with some exceptions that use only one topic. The first one is the event topic, where the tracking node publishes the message indicating the detection of an event. The second one is the notification topic, where the function triggered by the event sends the processed data in the form of notification and where the components interested in a particular event will subscribe.
-When a change in the system occurs, a message with attached information is sent on the event topic, triggering a function. This function performs some action and then publishes a response on the notification topic. The use of two or more topics for each event type improves the management of the communication granting more control to the developer. For instance, the interested device can subscribe only to the notification topic where the function will publish the elaborated data.
+
 The default topics are detailed below:
 
 | Event           	| Notification         	|

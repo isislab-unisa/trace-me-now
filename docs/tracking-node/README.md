@@ -1,9 +1,6 @@
 # Tracking Node
 
 The tracking node library is based on Javascript and runs over a NodeJS requiring a device with a compatible operating system in addition to the BLE and Wi-Fi interfaces. The methods included allow the developer to start and stop the scan of the room and communicate with the application module using the Event/Notification system.
-Once the scanning is started, the tracking node will automatically localize and track the mobile nodes within the range, sending messages according to the events recorded. It is important to note that each tracking node needs to be configured with the room number where it is placed to perform the localization since the position must be known.
-The library provides specific methods supporting the addition of new functionalities, such as introducing new actions in response to events. 
-The default configuration involves a series of Raspberry Pi boards as tracking nodes. However, any hardware with Wi-Fi and BLE, compatible with NodeJS, can be used. 
 
 # Table of Contents
 - [Requirements](#requirements)

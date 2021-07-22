@@ -1,9 +1,8 @@
 # Self Hosted Server
 
 The on-premise architecture implements the server using a Docker Compose file including all the dependencies and the services needed.
-The server engine is realized through several Python modules while the Event/Notifications system is based on Eclipse Mosquitto.
+The server engine is based on Python while the Event/Notifications system is based on Eclipse Mosquitto.
 The database exploits a NoSQL MongoDB database.
-Finally, the security of the architecture relies on the Transport Layer Security protocol.
 
 # Table of Contents
 - [Requirements](#requirements)
@@ -272,7 +271,7 @@ A successful request will returns status code `200`, `404` otherwise.
 
 ## Notification System
 
-The Event/Notification system realizes the communication protocol of TraceMeNow exploiting the MQTT protocol.
+The Event/Notification is the communication protocol of TraceMeNow exploiting the MQTT protocol.
 The system includes two MQTT topics for each event, with some exceptions that use only one topic. The first one is the event topic, where the tracking node publishes the message indicating the detection of an event. The second one is the notification topic, where the function triggered by the event sends the processed data in the form of notification and where the components interested in a particular event will subscribe.
 
 The default topics are detailed below:

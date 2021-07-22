@@ -1,6 +1,7 @@
 # Tracking Node
 
-The tracking node library is based on Javascript and runs over a NodeJS requiring a device with a compatible operating system in addition to the BLE and Wi-Fi interfaces. The methods included allow the developer to start and stop the scan of the room and communicate with the application module using the Event/Notification system.
+The tracking node library is based on Javascript and runs over NodeJS.
+The default configuration involves a series of Raspberry Pi boards as tracking nodes. However, any hardware with Wi-Fi and BLE, compatible with NodeJS, can be used. 
 
 # Table of Contents
 - [Requirements](#requirements)

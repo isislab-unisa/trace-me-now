@@ -23,4 +23,5 @@ You can take advantage of all this self-handled process and define your own cust
 More information can be found in https://isislab-unisa.github.io/trace-me-now/#/README
 
 *More informations about TraceMeNow are avaible in the following article:*
+M. Borrazzo, G. D'Ambrosio, V. Scarano, C. Spagnuolo, TraceMeNow: an open-source software frameworkfor indoor localization applications, 2021, CEUR Workshop Proceedings, http://ceur-ws.org/Vol-3097/paper25.pdf
 
